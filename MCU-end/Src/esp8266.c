@@ -16,8 +16,8 @@ extern volatile Mcu mcu;
 extern volatile Uart uart;
 extern volatile Escalator escalator;
 extern volatile scan_t xdata adc_buf[NUM_SCANS];
-uint8_t pdata wifiSendBuffer[SEND_BUFFER_SIZE] = {0};
-uint8_t pdata wifiRecvBuffer[RECV_BUFFER_SIZE] = {0};
+volatile uint8_t pdata wifiSendBuffer[SEND_BUFFER_SIZE] = {0};
+volatile uint8_t pdata wifiRecvBuffer[RECV_BUFFER_SIZE] = {0};
 
 SI_SBIT(LED0, SFR_P1, 4); 
 
@@ -158,8 +158,8 @@ void wifiProcess(void)
 			if (wifi.Cstate == MODULE_RUNNING_POS_SEND)
 			{
 				wifiPosDataEncode(); /* WARN: another reason to do "pos + 1" is that '0' cause uartSend stop parse sendbuffer */
-				memset(&wifiRecvBuffer, 0, RECV_BUFFER_SIZE); /* buffer got something when parsing DAC data */
 				uartSend(&wifiSendBuffer, WIFI_DAC_DATA_SIZE);
+				break;
 			}
 			if (wifi.isDataChanged == 1)
 			{								
@@ -334,7 +334,7 @@ void wifiRecvCheck(void)
 			break;
 		case MODULE_RUNNING_POS_SEND: /* in this state, we parse and apply DAC data sent from PC */ /* AFTER POS DATA SENT, PC-END SHOULD SEND CORRESPONING DAC SPEED BACK */			
 			wifiApplyDACdata();			
-			wifi.isDataChanged = 0; /* this bit is cleared since POS data has been sent properly */
+			wifi.isDataChanged = 0; /* this flag is cleared since whole operation of POS send recv has done properly */
 			wifi.state = RUNNING_TRAINING;
 			wifi.Cstate = MODULE_SEND_DATA_ATCOMMAND;
 			break;
