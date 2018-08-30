@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "C:/Keil_v5/C51/INC/SiLABS/shared/si8051Base/",
+                "C:/Keil_v5/C51/INC/SiLABS/EFM8LB1/inc",
+                "C:/Keil_v5/C51/INC/SiLABS/shared/si8051Base/stdint.h",
+                "${workspaceFolder}/MCU-end/Inc"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.16299.0",
+            "compilerPath": "C:/Keil_v5/C51/BIN/C51.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "msvc-x64"
+        }
+    ],
+    "version": 4
+}
