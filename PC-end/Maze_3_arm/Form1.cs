@@ -1,4 +1,5 @@
-﻿/*
+﻿// ver 1.0.0
+/*
  1. after received data, ack didnt return properly.
  2. esp8266 still send its at+cipsend here, this occur same time with 1. .
  3. (maybe solved, this may caused by esp8266 didnt sent proper data since we use pared data to start the   timer)timer doesnt start even the training is started (sametime error with 1. 2.)
