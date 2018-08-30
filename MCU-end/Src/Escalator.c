@@ -13,7 +13,7 @@ void escalatorProcess(void)
 {   
     uint8_t index, index2; /* for loop and array index use (WARN) */
     uint8_t shiftedADC;
-	/*	WARN: debug use
+	/*	WARN: debug use (known issue: this section should uncommented at release version(wifi ver), it prevent this func(escalatorProcess()) run before wifi module done its initialization and ready to send training data, although it is harmless)
     if (wifi.state != RUNNING_TRAINING)
     {
         return;
