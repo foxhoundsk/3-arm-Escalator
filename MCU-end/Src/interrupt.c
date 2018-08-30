@@ -33,6 +33,7 @@ void UART0_ISR(void) interrupt UART0_IRQn /* WARN: we only turn interrupt at nee
             {
                 uart.currentPos = 0;
                 uart.state = RECV_DONE;
+                /* uart DAC use */  uart.Tstate = RX_DONE;
                 SCON0 &= ~SCON0_REN__RECEIVE_ENABLED;
             }
         }
@@ -55,6 +56,7 @@ void UART0_ISR(void) interrupt UART0_IRQn /* WARN: we only turn interrupt at nee
             if (uart.byteWaiting > 0)
             {
                 wifi.currentTick = mcu.sysTick; /* timeout detection */
+                /* uart DAC use */  uart.Tstate = RX_BUSY;
                 SCON0 |= SCON0_REN__RECEIVE_ENABLED;
             }
             else

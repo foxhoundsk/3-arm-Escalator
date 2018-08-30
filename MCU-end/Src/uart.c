@@ -2,6 +2,8 @@
 #include "esp8266.h"
 
 extern volatile Wifi wifi;
+extern volatile uint8_t pdata wifiSendBuffer[SEND_BUFFER_SIZE];
+extern volatile uint8_t pdata wifiRecvBuffer[RECV_BUFFER_SIZE]
 volatile Uart uart;
 
 /* WARN: TODO: if this func encountered 0(null) in sendbuffer it will treat it as end of data then stop counting data requeste to send */
@@ -31,8 +33,10 @@ void uartSend(uint8_t* buffer, uint8_t byteWaiting)
 		uart.byteWaiting = 0;
 	}
 
-	uart.state = SEND_START; /* TODO */
+	uart.state = SEND_START; /* TODO (deprecated, this state can be used to indicate that uart is not idling) */
 	wifi.state = DATA_SENDING;
+
+	/* uart DAC temp */	uart.Tstate = TX_BUSY;
 
 	//IE_EA = 0;
 	//IE |= IE_ES0__BMASK;
@@ -41,26 +45,52 @@ void uartSend(uint8_t* buffer, uint8_t byteWaiting)
 	//IE_EA = 1;
 	//SCON0_TI = 1;
 }
-
-/*
-for data has 0 want to send, you should use this func or modify the orign send function
-void uartSendPosData(void)
+/* this is a temporary func to replace wifi module's function, hence some func appear in this func has name prefixed "wifi" */
+void uartIsDataQueue(void)
 {
-	uart.queuingByte = POS_DATA_SIZE;
-
-	uart.state = SEND_START;
-	wifi.state = DATA_SENDING;
-
-	SCON0_RI = 0;
-	SCON0_TI = 1; /* trigger UART0 Tx interrupt 
+	if (wifi.isDataChanged) /* the flag is cleared once DAC data send back */
+	{
+		wifiPosDataEncode();
+		uartSend(&wifiSendBuffer, UART_DAC_RECV_SIZE);
+	}
 }
-*/
+
+void uartTransmission(void)
+{
+	switch (uart.Tstate)
+	{
+		case IDLE:
+			uartIsDataQueue();
+			break;
+		case TX_BUSY:
+
+			break;
+		case RX_BUSY:
+			if ((wifi.currentTick + UART_DAC_MAX_WAIT_TIME) <= mcu.sysTick) /* recv timeout detect */
+			{
+				uart.Tstate = IDLE;
+				memset(&wifiSendBuffer, 0, SEND_BUFFER_SIZE);
+				memset(&wifiRecvBuffer, 0, RECV_BUFFER_SIZE);
+			}
+			break;
+		case RX_DONE:
+			wifiApplyDACdata();
+			wifi.isDataChanged = 0;
+			uart.Tstate = IDLE;
+			memset(&wifiSendBuffer, 0, SEND_BUFFER_SIZE);
+			memset(&wifiRecvBuffer, 0, RECV_BUFFER_SIZE);
+			break;
+	}
+}
+
 void uartInit(void)
 {
 	uart.state = STANDBY;
 	uart.currentPos = 0;
 	uart.queuingByte = 0;
 	uart.byteWaiting = 0;
+
+	uart.Tstate = IDLE;
 }
 
 /*************flawless0714 * END OF FILE****/
