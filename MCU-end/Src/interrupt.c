@@ -18,23 +18,20 @@ SI_SBIT(LED0, SFR_P1, 4);                  // P1.4 LED0
 
 void UART0_ISR(void) interrupt UART0_IRQn /* WARN: we only turn interrupt at needed */
 {
-    if (uart.state == SEND_DONE)
+    if (SCON0_RI == 1)
     {
-        if (SCON0_RI == 1)
+        SCON0_RI = 0;
+        if (uart.byteWaiting > 0)
         {
-            SCON0_RI = 0;
-            if (uart.byteWaiting > 0)
-            {
-                wifiRecvBuffer[uart.currentPos] = SBUF0; 
-                uart.currentPos++; /* TODO: since we are not sure how compiler implement the ++ suffix at last line so we seperate it */
-                uart.byteWaiting--;
-            }
-            else
-            {
-                uart.currentPos = 0;
-                uart.state = RECV_DONE;
-                SCON0 &= ~SCON0_REN__RECEIVE_ENABLED;
-            }
+            wifiRecvBuffer[uart.currentPos] = SBUF0; 
+            uart.currentPos++; /* TODO: since we are not sure how compiler implement the ++ suffix at last line so we seperate it */
+            uart.byteWaiting--;
+        }
+        else
+        {
+            uart.currentPos = 0;
+            uart.state = RECV_DONE;
+            SCON0 &= ~SCON0_REN__RECEIVE_ENABLED;
         }
     }
     
