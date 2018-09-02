@@ -6,6 +6,7 @@ volatile Escalator escalator;
 extern volatile uint8_t CONVERSION_COMPLETE;
 //extern volatile uint16_t xdata adc_buf[3];
 extern volatile Wifi wifi;
+extern volatile Uart uart;
 extern volatile scan_t xdata adc_buf[1];
 
 /* TODO: if very early state the escalator should run? */
@@ -13,12 +14,12 @@ void escalatorProcess(void)
 {   
     uint8_t index, index2; /* for loop and array index use (WARN) */
     uint8_t shiftedADC;
-	/*	WARN: debug use (known issue: this section should uncommented at release version(wifi ver), it prevent this func(escalatorProcess()) run before wifi module done its initialization and ready to send training data, although it is harmless)
-    if (wifi.state != RUNNING_TRAINING)
+	/*	WARN: debug use (known issue: this section should uncommented at release version(wifi ver), it prevent this func(escalatorProcess()) run before wifi module done its initialization and ready to send training data, although it is harmless) */
+    if (uart.Tstate == WAIT_KNOCK_DOOR)
     {
         return;
     }
-    */
+    
     if (escalator.intervalFlag == 1)
     {
         escalator.intervalFlag = 0;
