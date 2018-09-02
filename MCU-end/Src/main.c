@@ -28,7 +28,7 @@ void main()
     Init();
     uartInit();
     wifiInit();
-    BC_EN = BC_CONNECTED; /* since we are now temporary using UART to send training data instead of wifi module, hence we assign UART to Board Controller to send data through usb virtual port directly */
+    BC_EN = BC_DISCONNECTED /*BC_CONNECTED*/; /* since we are now temporary using UART to send training data instead of wifi module, hence we assign UART to Board Controller to send data through usb virtual port directly */
     LED0 = 1; /* this indicate that sys is still breathing(~LED0 in interrupt) */
     IE_EA = 1;
         
@@ -238,7 +238,8 @@ void Init(void)
         escalator.arm[index].lastPos = POS_INIT;
         escalator.arm[index].currentPos = 0;
     }
-
+    
+    SFRPAGE = PG4_PAGE;
     DAC0L = 0x0;
 	DAC0H = 0x00;
 	DAC1L = 0x0;
