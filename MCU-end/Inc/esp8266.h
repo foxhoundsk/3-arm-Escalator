@@ -28,6 +28,7 @@
 #define CIPSEND_START               16
 #define CIPSEND_DATA_RECV__DAC      27 
 #define WIFI_DAC_DATA_SIZE          17/* this included header from esp8266 which is +IPD... */
+#define NO_DATA_EXPECTED            0
 
 /* AT command----------------------------------*/
 #define AT_RST      "AT+RST\0"
