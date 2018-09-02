@@ -8,13 +8,18 @@
 
 #include <SI_EFM8LB1_Register_Enums.h>
 
-#define UART_DAC_RECV_SIZE      6
-#define UART_DAC_MAX_WAIT_TIME  2000
+#define UART_KNOCK_DOOR_SIZE     3
+#define UART_TRUNCATED_WAIT_TIME 250
+#define UART_DAC_MAX_WAIT_TIME   2000
+#define UART_DAC_SIZE            6
 
 void uartSend(uint8_t* buffer, uint8_t byteWaiting);
 void uartInit(void);
 void uartIsDataQueue(void);
 void uartTransmission(void);
+bool uartIsDataKnockDoor(void);
+bool uartIsEndTrainData(void);
+void uartApplyDACData(void);
 
 typedef enum
 {
@@ -23,11 +28,12 @@ typedef enum
     RECV_START,
     RECV_DONE,
     SEND_START,
-    SEND_DONE,
+    SEND_DONE
 }State; 
 
 typedef enum
 {
+    WAIT_KNOCK_DOOR,
     IDLE,
     TX_BUSY,
     RX_BUSY,
