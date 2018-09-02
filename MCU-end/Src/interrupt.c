@@ -18,25 +18,6 @@ SI_SBIT(LED0, SFR_P1, 4);                  // P1.4 LED0
 
 void UART0_ISR(void) interrupt UART0_IRQn /* WARN: we only turn interrupt at needed */
 {
-    
-    if (SCON0_RI == 1)
-    {
-        SCON0_RI = 0;
-        if (uart.byteWaiting > 0)
-        {
-            wifiRecvBuffer[uart.currentPos] = SBUF0; 
-            uart.currentPos++; /* TODO: since we are not sure how compiler implement the ++ suffix at last line so we seperate it */
-            uart.byteWaiting--;
-        }
-        else
-        {
-            uart.currentPos = 0;
-            uart.state = RECV_DONE;
-            /* uart DAC use */  uart.Tstate = RX_DONE;
-            //SCON0 &= ~SCON0_REN__RECEIVE_ENABLED;
-        }
-    }
-    
     if (SCON0_TI == 1)
     {
         SCON0_TI = 0;
@@ -59,12 +40,35 @@ void UART0_ISR(void) interrupt UART0_IRQn /* WARN: we only turn interrupt at nee
             }
             else
             {                
-                wifi.state = RUNNING_TRAINING; /* since only RUNNING_TRAINING state has no receive needed condition, TODO: there have better implementation */
+                wifi.state = RUNNING_TRAINING;
                 uart.state = STANDBY;
                 
             }
         }
     }
+    if (SCON0_RI == 1)
+    {
+        SCON0_RI = 0;
+        /* this is to capture the end training notification data, since there is no better solution concluded, hence... (TODO) */
+        if (SBUF0 == 'E')
+        {
+            uart.byteWaiting = UART_DAC_SIZE;
+        }
+        if (uart.byteWaiting > 0)
+        {
+            wifiRecvBuffer[uart.currentPos] = SBUF0; 
+            uart.currentPos++; /* TODO: since we are not sure how compiler implement the ++ suffix at last line so we seperate it */
+            uart.byteWaiting--;
+        }
+        if(uart.byteWaiting == 0)
+        {
+            uart.currentPos = 0;
+            uart.state = RECV_DONE;
+            /* uart DAC use */  uart.Tstate = RX_DONE;
+            //SCON0 &= ~SCON0_REN__RECEIVE_ENABLED;
+        }
+    }
+    
 }
 
 void TIMER2_ISR(void) interrupt TIMER2_IRQn
@@ -73,10 +77,10 @@ void TIMER2_ISR(void) interrupt TIMER2_IRQn
     TMR2CN0_TF2H = 0;
     
     mcu.sysTick++;
-    if ((wifi.state == RUNNING_TRAINING) && (mcu.sysTick % 1000 == 0))
+    if (/*(wifi.state == RUNNING_TRAINING) &&*/ (mcu.sysTick % 1000 == 0))
     {
-        //LED0 = ~LED0;
-        LED0 = 0;
+        LED0 = ~LED0;
+        //LED0 = 0;
         
     }
     
