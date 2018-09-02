@@ -1,4 +1,4 @@
-// Ver 2.0.2
+// Ver 2.1.3
 /*
     1. Since the complicate step to setup wifi module(esp8266), we temporary deprecated the wifi transfer method and use USB-TTL instead.
 
