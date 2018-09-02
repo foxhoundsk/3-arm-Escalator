@@ -91,7 +91,8 @@
             this.ratRoute = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.debugTextbox = new System.Windows.Forms.TextBox();
+            this.label28 = new System.Windows.Forms.Label();
+            this.serialPortSelect = new System.Windows.Forms.ComboBox();
             this.label32 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
             this.trainTime = new System.Windows.Forms.TextBox();
@@ -208,9 +209,9 @@
             this.groupBoxFood.Controls.Add(this.checkBoxArmLoc2);
             this.groupBoxFood.Controls.Add(this.checkBoxArmLoc6);
             this.groupBoxFood.Location = new System.Drawing.Point(17, 51);
-            this.groupBoxFood.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBoxFood.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBoxFood.Name = "groupBoxFood";
-            this.groupBoxFood.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBoxFood.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBoxFood.Size = new System.Drawing.Size(65, 412);
             this.groupBoxFood.TabIndex = 45;
             this.groupBoxFood.TabStop = false;
@@ -221,7 +222,7 @@
             // 
             this.checkBoxArmLoc7.AutoSize = true;
             this.checkBoxArmLoc7.Location = new System.Drawing.Point(21, 352);
-            this.checkBoxArmLoc7.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxArmLoc7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBoxArmLoc7.Name = "checkBoxArmLoc7";
             this.checkBoxArmLoc7.Size = new System.Drawing.Size(15, 14);
             this.checkBoxArmLoc7.TabIndex = 41;
@@ -231,7 +232,7 @@
             // 
             this.checkBoxArmLoc3.AutoSize = true;
             this.checkBoxArmLoc3.Location = new System.Drawing.Point(20, 172);
-            this.checkBoxArmLoc3.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxArmLoc3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBoxArmLoc3.Name = "checkBoxArmLoc3";
             this.checkBoxArmLoc3.Size = new System.Drawing.Size(15, 14);
             this.checkBoxArmLoc3.TabIndex = 45;
@@ -241,7 +242,7 @@
             // 
             this.checkBoxArmLoc0.AutoSize = true;
             this.checkBoxArmLoc0.Location = new System.Drawing.Point(20, 38);
-            this.checkBoxArmLoc0.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxArmLoc0.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBoxArmLoc0.Name = "checkBoxArmLoc0";
             this.checkBoxArmLoc0.Size = new System.Drawing.Size(15, 14);
             this.checkBoxArmLoc0.TabIndex = 37;
@@ -252,7 +253,7 @@
             // 
             this.checkBoxArmLoc4.AutoSize = true;
             this.checkBoxArmLoc4.Location = new System.Drawing.Point(21, 217);
-            this.checkBoxArmLoc4.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxArmLoc4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBoxArmLoc4.Name = "checkBoxArmLoc4";
             this.checkBoxArmLoc4.Size = new System.Drawing.Size(15, 14);
             this.checkBoxArmLoc4.TabIndex = 44;
@@ -262,7 +263,7 @@
             // 
             this.checkBoxArmLoc1.AutoSize = true;
             this.checkBoxArmLoc1.Location = new System.Drawing.Point(20, 83);
-            this.checkBoxArmLoc1.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxArmLoc1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBoxArmLoc1.Name = "checkBoxArmLoc1";
             this.checkBoxArmLoc1.Size = new System.Drawing.Size(15, 14);
             this.checkBoxArmLoc1.TabIndex = 39;
@@ -272,7 +273,7 @@
             // 
             this.checkBoxArmLoc5.AutoSize = true;
             this.checkBoxArmLoc5.Location = new System.Drawing.Point(20, 263);
-            this.checkBoxArmLoc5.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxArmLoc5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBoxArmLoc5.Name = "checkBoxArmLoc5";
             this.checkBoxArmLoc5.Size = new System.Drawing.Size(15, 14);
             this.checkBoxArmLoc5.TabIndex = 43;
@@ -282,7 +283,7 @@
             // 
             this.checkBoxArmLoc2.AutoSize = true;
             this.checkBoxArmLoc2.Location = new System.Drawing.Point(20, 127);
-            this.checkBoxArmLoc2.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxArmLoc2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBoxArmLoc2.Name = "checkBoxArmLoc2";
             this.checkBoxArmLoc2.Size = new System.Drawing.Size(15, 14);
             this.checkBoxArmLoc2.TabIndex = 40;
@@ -292,7 +293,7 @@
             // 
             this.checkBoxArmLoc6.AutoSize = true;
             this.checkBoxArmLoc6.Location = new System.Drawing.Point(21, 309);
-            this.checkBoxArmLoc6.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxArmLoc6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBoxArmLoc6.Name = "checkBoxArmLoc6";
             this.checkBoxArmLoc6.Size = new System.Drawing.Size(15, 14);
             this.checkBoxArmLoc6.TabIndex = 42;
@@ -712,9 +713,9 @@
             // startButton
             // 
             this.startButton.Font = new System.Drawing.Font("新細明體", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.startButton.Location = new System.Drawing.Point(562, 410);
+            this.startButton.Location = new System.Drawing.Point(567, 390);
             this.startButton.Name = "startButton";
-            this.startButton.Size = new System.Drawing.Size(232, 127);
+            this.startButton.Size = new System.Drawing.Size(178, 94);
             this.startButton.TabIndex = 44;
             this.startButton.Text = "Start ";
             this.startButton.UseVisualStyleBackColor = true;
@@ -747,7 +748,8 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.debugTextbox);
+            this.groupBox2.Controls.Add(this.label28);
+            this.groupBox2.Controls.Add(this.serialPortSelect);
             this.groupBox2.Controls.Add(this.label32);
             this.groupBox2.Controls.Add(this.label33);
             this.groupBox2.Controls.Add(this.trainTime);
@@ -782,21 +784,32 @@
             this.groupBox2.Controls.Add(this.connectionState);
             this.groupBox2.Controls.Add(this.label15);
             this.groupBox2.Location = new System.Drawing.Point(13, 14);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox2.Size = new System.Drawing.Size(1261, 546);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Size = new System.Drawing.Size(1261, 612);
             this.groupBox2.TabIndex = 47;
             this.groupBox2.TabStop = false;
             this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter_1);
             // 
-            // debugTextbox
+            // label28
             // 
-            this.debugTextbox.Font = new System.Drawing.Font("新細明體", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.debugTextbox.Location = new System.Drawing.Point(839, 191);
-            this.debugTextbox.Name = "debugTextbox";
-            this.debugTextbox.Size = new System.Drawing.Size(130, 40);
-            this.debugTextbox.TabIndex = 83;
+            this.label28.AutoSize = true;
+            this.label28.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label28.Location = new System.Drawing.Point(37, 443);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(145, 21);
+            this.label28.TabIndex = 84;
+            this.label28.Text = "Com port select :";
+            // 
+            // serialPortSelect
+            // 
+            this.serialPortSelect.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.serialPortSelect.FormattingEnabled = true;
+            this.serialPortSelect.Location = new System.Drawing.Point(41, 491);
+            this.serialPortSelect.Name = "serialPortSelect";
+            this.serialPortSelect.Size = new System.Drawing.Size(121, 29);
+            this.serialPortSelect.TabIndex = 83;
             // 
             // label32
             // 
@@ -837,7 +850,7 @@
             0,
             0});
             this.arm1speed2.Location = new System.Drawing.Point(182, 129);
-            this.arm1speed2.Margin = new System.Windows.Forms.Padding(2);
+            this.arm1speed2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.arm1speed2.Maximum = new decimal(new int[] {
             20,
             0,
@@ -866,7 +879,7 @@
             0,
             0});
             this.arm1speed3.Location = new System.Drawing.Point(257, 129);
-            this.arm1speed3.Margin = new System.Windows.Forms.Padding(2);
+            this.arm1speed3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.arm1speed3.Maximum = new decimal(new int[] {
             20,
             0,
@@ -895,7 +908,7 @@
             0,
             0});
             this.arm2speed1.Location = new System.Drawing.Point(113, 177);
-            this.arm2speed1.Margin = new System.Windows.Forms.Padding(2);
+            this.arm2speed1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.arm2speed1.Maximum = new decimal(new int[] {
             20,
             0,
@@ -924,7 +937,7 @@
             0,
             0});
             this.arm2speed2.Location = new System.Drawing.Point(182, 177);
-            this.arm2speed2.Margin = new System.Windows.Forms.Padding(2);
+            this.arm2speed2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.arm2speed2.Maximum = new decimal(new int[] {
             20,
             0,
@@ -953,7 +966,7 @@
             0,
             0});
             this.arm2speed3.Location = new System.Drawing.Point(257, 177);
-            this.arm2speed3.Margin = new System.Windows.Forms.Padding(2);
+            this.arm2speed3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.arm2speed3.Maximum = new decimal(new int[] {
             20,
             0,
@@ -982,7 +995,7 @@
             0,
             0});
             this.arm3speed1.Location = new System.Drawing.Point(113, 233);
-            this.arm3speed1.Margin = new System.Windows.Forms.Padding(2);
+            this.arm3speed1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.arm3speed1.Maximum = new decimal(new int[] {
             20,
             0,
@@ -1011,7 +1024,7 @@
             0,
             0});
             this.arm3speed2.Location = new System.Drawing.Point(182, 233);
-            this.arm3speed2.Margin = new System.Windows.Forms.Padding(2);
+            this.arm3speed2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.arm3speed2.Maximum = new decimal(new int[] {
             20,
             0,
@@ -1040,7 +1053,7 @@
             0,
             0});
             this.arm3speed3.Location = new System.Drawing.Point(257, 233);
-            this.arm3speed3.Margin = new System.Windows.Forms.Padding(2);
+            this.arm3speed3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.arm3speed3.Maximum = new decimal(new int[] {
             20,
             0,
@@ -1186,7 +1199,7 @@
             0,
             0});
             this.arm1speed1.Location = new System.Drawing.Point(113, 129);
-            this.arm1speed1.Margin = new System.Windows.Forms.Padding(2);
+            this.arm1speed1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.arm1speed1.Maximum = new decimal(new int[] {
             20,
             0,
@@ -1327,7 +1340,8 @@
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.TextBox trainTime;
-        private System.Windows.Forms.TextBox debugTextbox;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.ComboBox serialPortSelect;
     }
 }
 

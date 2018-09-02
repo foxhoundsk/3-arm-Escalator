@@ -1,5 +1,6 @@
 ﻿// ver 1.0.0
 /*
+ WARN: SINCE WRONG GIT BRANCH, HERE SHOULD ONLY CHENGE ONE SECTION WITH COMMENT BUG WHEN MERGE BACK TO MASTER
  1. after received data, ack didnt return properly.
  2. esp8266 still send its at+cipsend here, this occur same time with 1. .
  3. (maybe solved, this may caused by esp8266 didnt sent proper data since we use pared data to start the   timer)timer doesnt start even the training is started (sametime error with 1. 2.)
@@ -18,6 +19,8 @@ using System.Linq;
 using System.Drawing;
 using System.IO;
 using System.Threading;
+using System.IO.Ports;
+using System.Collections.Generic;
 
 namespace Maze_3_arm
 {
@@ -44,6 +47,10 @@ namespace Maze_3_arm
         uint deadcode = 0;
         long endTimestamp;
 
+        SerialPort serialPort = new SerialPort();
+        List<Byte> receiveDataList = new List<Byte>();
+        char[] knockDoorConst = new char[3] { 'R', 'D', 'Y' };
+        byte timeoutCount = 0;
 
         module_Info arm_Info;
         public void DoRemoteIpInfoCast()
@@ -55,8 +62,10 @@ namespace Maze_3_arm
             UNCONNECT = 1,
             CONNECTED,
             CONNECTED_KNOCK_DOOR,
-            CONNECTED_PROCESSING,
-            CONNECTED_TRAINING_DONE
+            CONNECTED_KNOCK_DOOR_WAIT, /* used in uart mode */           
+            END_TRAINING_IN_PROGRESS, /* used in uart mode */
+            END_TRAINING_WAIT_PROGRESS, /* used in uart mode */
+            TRAINING_END /* used in uart mode */
         }
         public enum mazeStatus
         {
@@ -93,60 +102,93 @@ namespace Maze_3_arm
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            string[] ports = SerialPort.GetPortNames();
+            serialPortSelect.Items.AddRange(ports);
             //recvBuffer1 = 3;
             //recvBuffer[16] = 4;            
             //recvBuffer[0] = 1;
             //Array.Clear(recvBuffer, 0, recvBuffer.Length);
             // value cast success connectionState.Text = recvBuffer[0].ToString();
             globalBuffer.g_isThreadWorking = false;
-            newThread.Start();
-            arm_Info.shortTermError = new short[8] {0, 0, 0, 0, 0, 0, 0, 0};
-            arm_Info.longTermError  = new short[8] {0, 0, 0, 0, 0, 0, 0, 0};
-            arm_Info.food_left      = 0;
+            //newThread.Start();            
             arm_Info.trainState     = trainingStatus.STANDBY;
-            arm_Info.netState       = connectionStatus.UNCONNECT;
+            arm_Info.netState       = connectionStatus.CONNECTED_KNOCK_DOOR; /* CHANGEED FOR UART TRANSMISSION */
             arm_Info.isDataReceived = false;
-            DoRemoteIpInfoCast();   /* init variable since it cast a var which initialize with _new_, so with func call, we can guarantee that its been initialized */
+            globalBuffer.g_dataNeedProcess = false;
+            //DoRemoteIpInfoCast();   /* init variable since it cast a var which initialize with _new_, so with func call, we can guarantee that its been initialized */
             /* enable network timer and do a regular check to network state */
             networkTimer.Interval   = 100;
         }
- 
+
+        private void onSerialPortReceive(Object sender, SerialDataReceivedEventArgs e)
+        {
+            try
+            {
+                Byte[] buffer = new Byte[3]; /* WARN: once checksum added, the buffer size should increase */
+                int length = (sender as SerialPort).Read(buffer, 0, buffer.Length);
+                for (int i = 0; i < length; i++)
+                {
+                    receiveDataList.Add(buffer[i]);
+                }
+                globalBuffer.g_dataNeedProcess = true;
+            }
+            catch
+            {
+                serialPort.Close();
+            }
+        }
+
         private void networkTimer_Tick(object sender, EventArgs e)
         {
            
            switch (arm_Info.netState)
-           {
-                case connectionStatus.UNCONNECT:    /* connection init here */                                      
-                    try
-                    {
-                        globalBuffer.g_recvSocketfd = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                        globalBuffer.g_recvSocketfd.Bind(serverIpInfo);
-                        globalBuffer.g_recvSocketfd.ReceiveTimeout = 2000;
-                        //serverFd.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 5);
-                    }
-                    catch (Exception ex)
-                    {
-                        errorBox.Text = ex.ToString();
-                    }
-                    connectionState.Text = "CONNECTED_KNOCK_DOOR";
-                    arm_Info.netState = connectionStatus.CONNECTED_KNOCK_DOOR;
-                    break;
+           {                
                 case connectionStatus.CONNECTED_KNOCK_DOOR:
+                    /*
                     try
                     {
-                        globalBuffer.g_recvSocketfd.SendTo(sendBuffer, 6, SocketFlags.None, remoteIpInfo); /* send first packet to remote, which the data sent is "rd" */
+                        globalBuffer.g_recvSocketfd.SendTo(sendBuffer, 6, SocketFlags.None, remoteIpInfo); /* send first packet to remote, which the data sent is "rd" 
                         //globalBuffer.g_recvSocketfd.ReceiveFrom(recvBuffer, 0, 3, SocketFlags.None, ref Remote);
                     }
                     catch (Exception ex)
                     {
                         errorBox.Text = ex.ToString();
-                        break; /* re-knock the door */
+                        break; /* re-knock the door 
                     }
+                    
                     Array.Clear(recvBuffer, 0, recvBuffer.Length);
-                    connectionState.Text = "CONNECTED"; /* change color to green here */
-                    globalBuffer.g_isThreadWorking = true;
-                    arm_Info.netState = connectionStatus.CONNECTED;
+                    */
+                    serialPort.Write(knockDoorConst, 0, 3);
+                    arm_Info.netState = connectionStatus.CONNECTED_KNOCK_DOOR_WAIT;
+                    if (getCurrentTimestamp() >= endTimestamp) /* IF NEED RESTART WITHOUT RESTART THE APPM CONFIGUR HERE */
+                    {
+                        timerTimeElapsed.Enabled = false;
+                        timeLeft.Text = "0 : 0";
+                        arm_Info.netState = connectionStatus.END_TRAINING_IN_PROGRESS;
+                        break;
+                    }
+                    //connectionState.Text = "CONNECTED"; /* change color to green here */
+                    //globalBuffer.g_isThreadWorking = true;
+                    // THIS CANT BE HERE, SHOULD AFTER KNOCK_DOOR CHECK arm_Info.netState = connectionStatus.CONNECTED;
+                    break;
+                case connectionStatus.CONNECTED_KNOCK_DOOR_WAIT:
+                    if (!globalBuffer.g_dataNeedProcess)
+                    {
+                        timeoutCount++;
+                        if (timeoutCount >= 3)
+                        {
+                            timeoutCount = 0;
+                            arm_Info.netState = connectionStatus.CONNECTED_KNOCK_DOOR;
+                        }
+                    }
+                    else
+                    {
+                        timeoutCount = 0; /* for next use */
+                        connectionState.Text = "Connected";
+                        arm_Info.netState = connectionStatus.CONNECTED;
+                        globalBuffer.g_dataNeedProcess = false;
+                        receiveDataList.Clear();
+                    }
                     break;
                 case connectionStatus.CONNECTED:
                     /*
@@ -163,31 +205,23 @@ namespace Maze_3_arm
                     if (getCurrentTimestamp() >= endTimestamp) /* IF NEED RESTART WITHOUT RESTART THE APPM CONFIGUR HERE */
                     {
                         timerTimeElapsed.Enabled = false;
-                        timeLeft.Text = "0 : 0";
-                        resultStreamWriter.Close();
-                        resultFileStream.Close();
-                        trainingState.Text = "Training end";
-                        timerTimeElapsed.Enabled = false;
-                        startButton.BackColor = Color.LawnGreen;
+                        timeLeft.Text = "0 : 0";                        
+                        arm_Info.netState = connectionStatus.END_TRAINING_IN_PROGRESS;
                         break;
                     }
                     ushort ratPos, recordPos = 0;
-                    trainingState.Text = "In Progress";
-                    if (!globalBuffer.g_isDataReceive) /* data received, we go foward to parse data */
-                        break;
+                    trainingState.Text = "In Progress";                    
                     if (!globalBuffer.g_dataNeedProcess)
                         break;
-                    debugTextbox.Text = "received!";
                         // send corresponding DAC here, use following func to send 
                         /* C# is big-endian */
-                        ratPos = globalBuffer.g_recvBuffer[0];
                     //Decimal.ToByte(((NumericUpDown)Controls.Find("arm1speed1".ToString(), true)[0]).Value);//arm1speed1
                     for (ushort i = 0; i < 3; i++)
                     {
                         switch (i)
                         {
                             case 0:
-                                switch (globalBuffer.g_recvBuffer[i])
+                                switch (receiveDataList[i])
                                 {
                                     case 1:
                                         DACspeed[0] = (byte)DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm1speed1".ToString(), true)[0]).Value)) / 5) - 1)];
@@ -204,7 +238,7 @@ namespace Maze_3_arm
                                 }
                                 break;
                             case 1:
-                                switch (globalBuffer.g_recvBuffer[i])
+                                switch (receiveDataList[i])
                                 {
                                     case 1:
                                         DACspeed[2] = (byte)DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm2speed1".ToString(), true)[0]).Value)) / 5) - 1)];
@@ -221,7 +255,7 @@ namespace Maze_3_arm
                                 }                                
                                 break;
                             case 2:
-                                switch (globalBuffer.g_recvBuffer[i])
+                                switch (receiveDataList[i])
                                 {
                                     case 1:
                                         DACspeed[4] = (byte)DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm3speed1".ToString(), true)[0]).Value)) / 5) - 1)];
@@ -239,24 +273,9 @@ namespace Maze_3_arm
                                 break;
                         }                            
                     }
-                    /*
-                    ratPos--;
-                    DACspeed[0] =  (byte)DACtable[ratPos];
-                    DACspeed[1] = (byte) (DACtable[ratPos] >> 8);
-
-                    ratPos = globalBuffer.g_recvBuffer[1];
-                    ratPos--;
-                    DACspeed[2] = (byte)DACtable[ratPos];
-                    DACspeed[3] = (byte)(DACtable[ratPos] >> 8);
-
-                    ratPos = globalBuffer.g_recvBuffer[2];
-                    ratPos--;
-                    DACspeed[4] = (byte)DACtable[ratPos];
-                    DACspeed[5] = (byte)(DACtable[ratPos] >> 8);
-                    */
 
                     /*----------Data Record-----------*/
-                    ratPos = globalBuffer.g_recvBuffer[0];
+                    ratPos = receiveDataList[0];
                     switch (ratPos)
                     {
                         case 0:
@@ -268,13 +287,11 @@ namespace Maze_3_arm
                         case 2:
                             recordPos = 15;
                             break;
-                        case 3:
-                            recordPos = 20;
-                            break;
+                        /* POS case 3 deprecated since we changed total POS from 4 to 3 */
                     }
-                    resultStreamWriter.WriteLine((ratPos + 1).ToString() + "  " + recordPos.ToString());
+                    resultStreamWriter.WriteLine(ratPos.ToString() + "  " + recordPos.ToString());
                     resultStreamWriter.Flush();
-                    ratPos = globalBuffer.g_recvBuffer[1];
+                    ratPos = receiveDataList[1];
                     switch (ratPos)
                     {
                         case 0:
@@ -286,13 +303,10 @@ namespace Maze_3_arm
                         case 2:
                             recordPos = 15;
                             break;
-                        case 3:
-                            recordPos = 20;
-                            break;
                     }
-                    resultStreamWriter.WriteLine((ratPos + 1).ToString() + "  " + recordPos.ToString());
+                    resultStreamWriter.WriteLine(ratPos.ToString() + "  " + recordPos.ToString());
                     resultStreamWriter.Flush();
-                    ratPos = globalBuffer.g_recvBuffer[1];
+                    ratPos = receiveDataList[2]; /* WARN: (MUST FIX IN MASTER BRANCH)bug fixed */
                     switch (ratPos)
                     {
                         case 0:
@@ -304,146 +318,60 @@ namespace Maze_3_arm
                         case 2:
                             recordPos = 15;
                             break;
-                        case 3:
-                            recordPos = 20;
-                            break;
                     }
-                    resultStreamWriter.WriteLine((ratPos + 1).ToString() + "  " + recordPos.ToString());
+                    resultStreamWriter.WriteLine(ratPos.ToString() + "  " + recordPos.ToString());
                     resultStreamWriter.Flush();
                     resultStreamWriter.WriteLine();
                     resultStreamWriter.Flush();
                     /*--------------------------------*/
-                    globalBuffer.g_recvSocketfd.SendTo(DACspeed, 6, SocketFlags.None, remoteIpInfo); /* send ACK back */
-                    Array.Clear(globalBuffer.g_recvBuffer, 0, globalBuffer.g_recvBuffer.Length);
+                    //this line and following line is used in wifi module. globalBuffer.g_recvSocketfd.SendTo(DACspeed, 6, SocketFlags.None, remoteIpInfo); /* send ACK back */
+                    //Array.Clear(globalBuffer.g_recvBuffer, 0, globalBuffer.g_recvBuffer.Length);
+                    /* uart transmission use-------------------------*/
+                    serialPort.Write(DACspeed, 0, 6); /* we don't clean DACspeed is because that each time we write whole size of it with new data */
+                    receiveDataList.Clear();
                     globalBuffer.g_dataNeedProcess = false;
+                    /* --------------------------------------------- */
                     //arm_Iwnfo.isDataReceived = true; TODO maybe use in the future                    
                     //arm_Info.netState = connectionStatus.CONNECTED_PROCESSING;
                     //Array.Clear(dataBuffer, 0, dataBuffer.Length); use this after process the received data
                     break;
-                case connectionStatus.CONNECTED_PROCESSING:
-                    if (deadcode < 3)
-                        deadcode++;
-                    if (deadcode >= 3)
-                    {
-                        if (ratRouteIndex < (64 - 1))
-                        {
-                            if ((uint)globalBuffer.g_recvBuffer[ratRouteIndex] != 0)
-                            {
-                                ratRoute.Text += ((uint)globalBuffer.g_recvBuffer[ratRouteIndex]).ToString() + " ";
-                                ratRouteIndex++;                                
-                            }       
-                        }
-                    }
-                    
-                    for (short i = 1; i <= 16; i += 2)
-                    {
-                        switch (i)
-                        {
-                            case 1:
-                                longTerm1.Text = globalBuffer.g_recvBuffer[i].ToString();
-                                shortTerm1.Text = globalBuffer.g_recvBuffer[i + 1].ToString();
-                                break;
-                            case 3:
-                                longTerm2.Text = globalBuffer.g_recvBuffer[i].ToString();
-                                shortTerm2.Text = globalBuffer.g_recvBuffer[i + 1].ToString();
-                                break;
-                            case 5:
-                                longTerm3.Text = globalBuffer.g_recvBuffer[i].ToString();
-                                shortTerm3.Text = globalBuffer.g_recvBuffer[i + 1].ToString();
-                                break;
-                            case 7:
-                                longTerm4.Text = globalBuffer.g_recvBuffer[i].ToString();
-                                shortTerm4.Text = globalBuffer.g_recvBuffer[i + 1].ToString();
-                                break;
-                            case 9:
-                                longTerm5.Text = globalBuffer.g_recvBuffer[i].ToString();
-                                shortTerm5.Text = globalBuffer.g_recvBuffer[i + 1].ToString();
-                                break;
-                            case 11:
-                                longTerm6.Text = globalBuffer.g_recvBuffer[i].ToString();
-                                shortTerm6.Text = globalBuffer.g_recvBuffer[i + 1].ToString();
-                                break;
-                            case 13:
-                                longTerm7.Text = globalBuffer.g_recvBuffer[i].ToString();
-                                shortTerm7.Text = globalBuffer.g_recvBuffer[i + 1].ToString();
-                                break;
-                            case 15:
-                                longTerm8.Text = globalBuffer.g_recvBuffer[i].ToString();
-                                shortTerm8.Text = globalBuffer.g_recvBuffer[i + 1].ToString();
-                                break;
-                        }
-                    }
-                    short buffer = 0;
-                    for (short i = 1; i < 16; i += 2)
-                    {
-                        buffer += globalBuffer.g_recvBuffer[i];
-                    }
-                    totalLongTerm.Text = buffer.ToString();
-                    buffer = 0;
-                    for (short i = 2; i <= 16; i += 2)
-                    {
-                        buffer += globalBuffer.g_recvBuffer[i];
-                    }
-                    totalShortTerm.Text = buffer.ToString();
-                    foodAte.Text = globalBuffer.g_recvBuffer[17].ToString();                    
-                    /* enter seq can record at the end of training */                                       
-                    switch (globalBuffer.g_recvBuffer[0]) /* handle this since it's better to change the state */
-                    {
-                        case (byte)mazeStatus.WAIT_FOR_RAT:
-                            mazeState.Text = "Wait for rat";
-                            break;
-                        case (byte)mazeStatus.RAT_ENTERED:
-                            mazeState.Text = "Rat entered arm";
-                            break;
-                        case (byte)mazeStatus.RAT_NOT_ENTERED:
-                            if (isTrainingFisrtTime)
-                            {
-                                isTrainingFisrtTime = false;
-                                timerTimeElapsed.Enabled = true;
-                            }
-                            mazeState.Text = "Rat not entered";
-                            break;
-                        case (byte)mazeStatus.TRAINING_END:
-                            mazeState.Text = "Training end";
-                            timerTimeElapsed.Enabled = false;
-                            startButton.BackColor = Color.LawnGreen;
-                            arm_Info.netState = connectionStatus.CONNECTED_TRAINING_DONE;
-                            break;
-                    }
-                    if (arm_Info.netState == connectionStatus.CONNECTED_TRAINING_DONE)
-                    {
-                        globalBuffer.g_isDataReceive = false;
-                        break;
-                    }
-                    Array.Clear(globalBuffer.g_recvBuffer, 0, globalBuffer.g_recvBuffer.Length);
-                    arm_Info.netState = connectionStatus.CONNECTED;
-                    globalBuffer.g_isDataReceive = false;
+                case connectionStatus.END_TRAINING_IN_PROGRESS:
+                    serialPort.Write(new char[6] {'E','N','D','O','F','T'}, 0, 6); // last 3 bytes are used to fill buffer to 6 byte, this is due to a infrastructure problem, it deserve better implementation TODO
+                    arm_Info.netState = connectionStatus.END_TRAINING_WAIT_PROGRESS;
                     break;
-                case connectionStatus.CONNECTED_TRAINING_DONE:
-                    /* implement seq record here */
-                    /* after file write done, close file */
-                    buffer = 18; /* improve overhead */
-                    //while (globalBuffer.g_recvBuffer[buffer] != 0)
-                    //    resultStreamWriter.WriteLine(globalBuffer.g_recvBuffer[buffer++].ToString());
-                    //resultStreamWriter.Flush();
+                case connectionStatus.END_TRAINING_WAIT_PROGRESS:
+                    if (!globalBuffer.g_dataNeedProcess)
+                    {
+                        timeoutCount++;
+                        if (timeoutCount >= 3)
+                        {
+                            timeoutCount = 0;
+                            arm_Info.netState = connectionStatus.END_TRAINING_IN_PROGRESS;
+                        }
+                    }
+                    else
+                    {
+                        timeoutCount = 0;
+                        if (receiveDataList[0] != 'A' || receiveDataList[1] != 'C')
+                        {
+                            arm_Info.netState = connectionStatus.END_TRAINING_IN_PROGRESS;
+                            break;
+                        }
+                        arm_Info.netState = connectionStatus.TRAINING_END; /* training end state switched here */
+                    }
+                    break;
+                case connectionStatus.TRAINING_END:
                     resultStreamWriter.Close();
                     resultFileStream.Close();
-                    trainingState.BackColor = Color.LightGreen;
-                    timeElapsed.BackColor = Color.LightGreen;
-                    trainingState.Text = "Complete";
+                    trainingState.Text = "Training end";
+                    startButton.BackColor = Color.LawnGreen;
+                    Console.Beep(1000, 1500);
+                    Thread.Sleep(500);
+                    Console.Beep(1000, 1500);
+                    //Thread.Sleep(1000);
+                    //Console.Beep(1000, 1500);
                     networkTimer.Enabled = false;
-
-                    /* beep notification */
-                    Console.Beep(1000, 1500);
-                    Thread.Sleep(1000);
-                    Console.Beep(1000, 1500);
-                    Thread.Sleep(1000);
-                    Console.Beep(1000, 1500);
-                    Thread.Sleep(1000);
-                    Console.Beep(1000, 1500);
-                    Thread.Sleep(1000);
-                    Console.Beep(1000, 1500);
-                    break;                
+                    break;                                    
            }
         }
 
@@ -471,95 +399,41 @@ namespace Maze_3_arm
                 resultFilePath.ForeColor = Color.Red;
                 return;
             }
-            /* I dont know why this working so weried
-            byte index = 0, bufferIndex = 2;
-            foreach (CheckBox food in groupBoxFood.Controls)
+            try
             {
-                if (index < 8)
-                {
-                    String str = "checkBoxArmLoc" + index;
-                    food.Name = str;
-                    
-                    if (food.Checked)
-                    {
-                        sendBuffer[bufferIndex] = index;
-                        bufferIndex += 1;
-                    }
-                    
-                    food.Checked = true;
-                }
-                index++;
-            }    
-            */
-            /*
-            ushort bufferIndex = 2;
-            while (true)    /* this part is extremly hard-coded 
+                serialPortSelect.ForeColor = SystemColors.WindowText;
+                serialPort.PortName = serialPortSelect.Text;
+                serialPort.DataBits = 8;
+                serialPort.Parity = Parity.None;
+                serialPort.StopBits = StopBits.One;
+                serialPort.BaudRate = 115200;
+            }
+            catch
             {
-                if (checkBoxArmLoc0.Checked)
-                {
-                    sendBuffer[bufferIndex] = 0;                    
-                    bufferIndex++;
-                    if (bufferIndex == 6)
-                        break;
-                }
-                if (checkBoxArmLoc1.Checked)
-                {
-                    sendBuffer[bufferIndex] = 1;
-                    bufferIndex++;
-                    if (bufferIndex == 6)
-                        break;
-                }
-                if (checkBoxArmLoc2.Checked)
-                {
-                    sendBuffer[bufferIndex] = 2;
-                    bufferIndex++;
-                    if (bufferIndex == 6)
-                        break;
-                }
-                if (checkBoxArmLoc3.Checked)
-                {
-                    sendBuffer[bufferIndex] = 3;
-                    bufferIndex++;
-                    if (bufferIndex == 6)
-                        break;
-                }
-                if (checkBoxArmLoc4.Checked)
-                {
-                    sendBuffer[bufferIndex] = 4;
-                    bufferIndex++;
-                    if (bufferIndex == 6)
-                        break;
-                }
-                if (checkBoxArmLoc5.Checked)
-                {
-                    sendBuffer[bufferIndex] = 5;
-                    bufferIndex++;
-                    if (bufferIndex == 6)
-                        break;
-                }
-                if (checkBoxArmLoc6.Checked)
-                {
-                    sendBuffer[bufferIndex] = 6;
-                    bufferIndex++;
-                    if (bufferIndex == 6)
-                        break;
-                }
-                if (checkBoxArmLoc7.Checked)
-                {
-                    sendBuffer[bufferIndex] = 7;
-                    bufferIndex++;
-                    if (bufferIndex == 6)
-                        break;
-                }
-                errorBox.ForeColor = Color.Red;
-                errorBox.Text = "Arm with food didn't check properly";
+                serialPortSelect.ForeColor = Color.Red;
+                serialPortSelect.Text = "Port error";
                 return;
             }
-            */
+            try
+            {
+                serialPortSelect.ForeColor = SystemColors.WindowText;
+                serialPort.Open();
+                serialPort.DiscardOutBuffer();
+                serialPort.DiscardInBuffer();
+                serialPort.DataReceived += new SerialDataReceivedEventHandler(onSerialPortReceive);
+                serialPortSelect.ForeColor = Color.Black;
+            }
+            catch
+            {
+                serialPortSelect.ForeColor = Color.Red;
+                serialPortSelect.Text = "Port error";
+                return;
+            }
+
             endTimestamp = getCurrentTimestamp() + long.Parse(trainTime.Text) * 60;
             resultFilePath.ForeColor = Color.Black;
             resultFilePath.Text = resultFileDialog.FileName;
-            startButton.BackColor = Color.YellowGreen;
+            startButton.BackColor = Color.Orange;
             timerTimeElapsed.Enabled = true;
             networkTimer.Enabled = true;
             return;
