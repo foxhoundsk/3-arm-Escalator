@@ -5,7 +5,8 @@
         "si_toolchain.h": "c",
         "uart.h": "c",
         "esp8266.h": "c",
-        "main.h": "c"
+        "main.h": "c",
+        "stdbool.h": "c"
     },
     "C_Cpp.dimInactiveRegions": false
 }
