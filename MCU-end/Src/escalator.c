@@ -36,8 +36,7 @@ void escalatorProcess(void)
         switch (index) /* p1_1 to p1_3 stands for escalator arm from left to right respectively*/
         {
             case 0:                
-                shiftedADC = (uint8_t) (adc_buf[0].p1_1 >> 8);
-                if (0xfd <= shiftedADC && shiftedADC <= 0xff)  escalator.arm[index].variability[POS_1of4]++;
+                if (0x3fd <= adc_buf[0].p1_1 && adc_buf[0].p1_1 <= 0x3ff)  escalator.arm[index].variability[POS_1of4]++;
                 else if (0x44 <= shiftedADC && shiftedADC <= 0x4a) escalator.arm[index].variability[POS_2of4]++;
                 else if (0x17 <= shiftedADC && shiftedADC <= 0x1d) escalator.arm[index].variability[POS_3of4]++;
                 else if (0xd8 <= shiftedADC && shiftedADC <= 0xde) escalator.arm[index].variability[POS_4of4]++;
@@ -83,8 +82,7 @@ void escalatorProcess(void)
                 }  
                 break;
             case 2:   
-                shiftedADC = (uint8_t) (adc_buf[0].p1_3 >> 8);                             
-                if (0xfd <= shiftedADC && shiftedADC <= 0xff)  escalator.arm[index].variability[POS_1of4]++;
+                if (0x3fd <= adc_buf[0].p1_3 && adc_buf[0].p1_3 <= 0x3ff)  escalator.arm[index].variability[POS_1of4]++;
                 else if (0x44 <= shiftedADC && shiftedADC <= 0x4a) escalator.arm[index].variability[POS_2of4]++;
                 else if (0x17 <= shiftedADC && shiftedADC <= 0x1d) escalator.arm[index].variability[POS_3of4]++;
                 else if (0xd8 <= shiftedADC && shiftedADC <= 0xde) escalator.arm[index].variability[POS_4of4]++;
