@@ -1,5 +1,6 @@
 #include "uart.h"
 #include "esp8266.h"
+#include "main.h"
 
 extern volatile Wifi wifi;
 extern volatile Escalator escalator;
@@ -118,7 +119,7 @@ void uartApplyDACData(void)
 	SFRPAGE = savedpage;
 }
 
-bool uartIsDataKnockDoor(void)	/* with this implementation, data similarity should be considered */
+bool uartIsDataKnockDoor(void)	/* with this implementation, data similarity should be considered, AND WARN THAT IF THE PACKET IS MALFORMED*/
 {
 	if ((wifiRecvBuffer[0] == 'R') && (wifiRecvBuffer[1] == 'D') && (wifiRecvBuffer[2] == 'Y'))	
 	{		
@@ -130,6 +131,7 @@ bool uartIsDataKnockDoor(void)	/* with this implementation, data similarity shou
 		memset(&wifiSendBuffer, 0, SEND_BUFFER_SIZE);
 		memset(&wifiRecvBuffer, 0, RECV_BUFFER_SIZE);
 		uart.Tstate = IDLE;	/* training is about to begin */
+		DAC_Enable();
 		return true;
 	}
 	/* WARN: with this implementation, we must guarantee that there are no other data sent at KNOCK_DOOR state, otherwise it will make mcu starts training once received some data (TODO) */
@@ -152,7 +154,7 @@ bool uartIsEndTrainData(void)	/* with this implementation, data similarity shoul
 		uart.byteWaiting = UART_KNOCK_DOOR_SIZE;
 		uart.Tstate = WAIT_KNOCK_DOOR;
 		uart.state = STANDBY;
-		/* re-init training args and reset DAC---- */
+		/* re-init training args and reset DAC---- */		
 		escalator.intervalFlag = 0;
     	for (index = 0; index < 3; index++)
     	{
@@ -172,6 +174,10 @@ bool uartIsEndTrainData(void)	/* with this implementation, data similarity shoul
 		DAC2L = 0x0;
 		DAC2H = 0x00;
 		SFRPAGE = index;
+		wifi.currentTick = mcu.sysTick;
+		while ((wifi.currentTick + DAC_APPLY_TIME) >= mcu.sysTick);
+		DAC_Disable();
+		wifi.currentTick = 0;
 		/*--------------------------*/
 		memset(&wifiRecvBuffer, 0, RECV_BUFFER_SIZE);
 		memset(&wifiSendBuffer, 0, SEND_BUFFER_SIZE);
