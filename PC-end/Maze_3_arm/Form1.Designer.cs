@@ -80,8 +80,6 @@
             this.connectionState = new System.Windows.Forms.TextBox();
             this.trainingState = new System.Windows.Forms.TextBox();
             this.networkTimer = new System.Windows.Forms.Timer(this.components);
-            this.label18 = new System.Windows.Forms.Label();
-            this.errorBox = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
             this.resultFilePath = new System.Windows.Forms.TextBox();
             this.pathSelectButton = new System.Windows.Forms.Button();
@@ -91,6 +89,15 @@
             this.ratRoute = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label37 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.ratPosR = new System.Windows.Forms.TextBox();
+            this.ratPosM = new System.Windows.Forms.TextBox();
+            this.ratPosL = new System.Windows.Forms.TextBox();
+            this.stopButton = new System.Windows.Forms.Button();
             this.label28 = new System.Windows.Forms.Label();
             this.serialPortSelect = new System.Windows.Forms.ComboBox();
             this.label32 = new System.Windows.Forms.Label();
@@ -209,9 +216,9 @@
             this.groupBoxFood.Controls.Add(this.checkBoxArmLoc2);
             this.groupBoxFood.Controls.Add(this.checkBoxArmLoc6);
             this.groupBoxFood.Location = new System.Drawing.Point(17, 51);
-            this.groupBoxFood.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBoxFood.Margin = new System.Windows.Forms.Padding(2);
             this.groupBoxFood.Name = "groupBoxFood";
-            this.groupBoxFood.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBoxFood.Padding = new System.Windows.Forms.Padding(2);
             this.groupBoxFood.Size = new System.Drawing.Size(65, 412);
             this.groupBoxFood.TabIndex = 45;
             this.groupBoxFood.TabStop = false;
@@ -222,7 +229,7 @@
             // 
             this.checkBoxArmLoc7.AutoSize = true;
             this.checkBoxArmLoc7.Location = new System.Drawing.Point(21, 352);
-            this.checkBoxArmLoc7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxArmLoc7.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxArmLoc7.Name = "checkBoxArmLoc7";
             this.checkBoxArmLoc7.Size = new System.Drawing.Size(15, 14);
             this.checkBoxArmLoc7.TabIndex = 41;
@@ -232,7 +239,7 @@
             // 
             this.checkBoxArmLoc3.AutoSize = true;
             this.checkBoxArmLoc3.Location = new System.Drawing.Point(20, 172);
-            this.checkBoxArmLoc3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxArmLoc3.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxArmLoc3.Name = "checkBoxArmLoc3";
             this.checkBoxArmLoc3.Size = new System.Drawing.Size(15, 14);
             this.checkBoxArmLoc3.TabIndex = 45;
@@ -242,7 +249,7 @@
             // 
             this.checkBoxArmLoc0.AutoSize = true;
             this.checkBoxArmLoc0.Location = new System.Drawing.Point(20, 38);
-            this.checkBoxArmLoc0.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxArmLoc0.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxArmLoc0.Name = "checkBoxArmLoc0";
             this.checkBoxArmLoc0.Size = new System.Drawing.Size(15, 14);
             this.checkBoxArmLoc0.TabIndex = 37;
@@ -253,7 +260,7 @@
             // 
             this.checkBoxArmLoc4.AutoSize = true;
             this.checkBoxArmLoc4.Location = new System.Drawing.Point(21, 217);
-            this.checkBoxArmLoc4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxArmLoc4.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxArmLoc4.Name = "checkBoxArmLoc4";
             this.checkBoxArmLoc4.Size = new System.Drawing.Size(15, 14);
             this.checkBoxArmLoc4.TabIndex = 44;
@@ -263,7 +270,7 @@
             // 
             this.checkBoxArmLoc1.AutoSize = true;
             this.checkBoxArmLoc1.Location = new System.Drawing.Point(20, 83);
-            this.checkBoxArmLoc1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxArmLoc1.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxArmLoc1.Name = "checkBoxArmLoc1";
             this.checkBoxArmLoc1.Size = new System.Drawing.Size(15, 14);
             this.checkBoxArmLoc1.TabIndex = 39;
@@ -273,7 +280,7 @@
             // 
             this.checkBoxArmLoc5.AutoSize = true;
             this.checkBoxArmLoc5.Location = new System.Drawing.Point(20, 263);
-            this.checkBoxArmLoc5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxArmLoc5.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxArmLoc5.Name = "checkBoxArmLoc5";
             this.checkBoxArmLoc5.Size = new System.Drawing.Size(15, 14);
             this.checkBoxArmLoc5.TabIndex = 43;
@@ -283,7 +290,7 @@
             // 
             this.checkBoxArmLoc2.AutoSize = true;
             this.checkBoxArmLoc2.Location = new System.Drawing.Point(20, 127);
-            this.checkBoxArmLoc2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxArmLoc2.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxArmLoc2.Name = "checkBoxArmLoc2";
             this.checkBoxArmLoc2.Size = new System.Drawing.Size(15, 14);
             this.checkBoxArmLoc2.TabIndex = 40;
@@ -293,7 +300,7 @@
             // 
             this.checkBoxArmLoc6.AutoSize = true;
             this.checkBoxArmLoc6.Location = new System.Drawing.Point(21, 309);
-            this.checkBoxArmLoc6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxArmLoc6.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxArmLoc6.Name = "checkBoxArmLoc6";
             this.checkBoxArmLoc6.Size = new System.Drawing.Size(15, 14);
             this.checkBoxArmLoc6.TabIndex = 42;
@@ -657,26 +664,6 @@
             // 
             this.networkTimer.Tick += new System.EventHandler(this.networkTimer_Tick);
             // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label18.Location = new System.Drawing.Point(563, 263);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(118, 21);
-            this.label18.TabIndex = 39;
-            this.label18.Text = "Error output :";
-            // 
-            // errorBox
-            // 
-            this.errorBox.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.errorBox.Location = new System.Drawing.Point(567, 295);
-            this.errorBox.Multiline = true;
-            this.errorBox.Name = "errorBox";
-            this.errorBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.errorBox.Size = new System.Drawing.Size(351, 75);
-            this.errorBox.TabIndex = 40;
-            // 
             // label20
             // 
             this.label20.AutoSize = true;
@@ -713,7 +700,7 @@
             // startButton
             // 
             this.startButton.Font = new System.Drawing.Font("新細明體", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.startButton.Location = new System.Drawing.Point(567, 390);
+            this.startButton.Location = new System.Drawing.Point(567, 406);
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(178, 94);
             this.startButton.TabIndex = 44;
@@ -748,13 +735,20 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label37);
+            this.groupBox2.Controls.Add(this.label36);
+            this.groupBox2.Controls.Add(this.label35);
+            this.groupBox2.Controls.Add(this.label34);
+            this.groupBox2.Controls.Add(this.label18);
+            this.groupBox2.Controls.Add(this.ratPosR);
+            this.groupBox2.Controls.Add(this.ratPosM);
+            this.groupBox2.Controls.Add(this.ratPosL);
+            this.groupBox2.Controls.Add(this.stopButton);
             this.groupBox2.Controls.Add(this.label28);
             this.groupBox2.Controls.Add(this.serialPortSelect);
             this.groupBox2.Controls.Add(this.label32);
             this.groupBox2.Controls.Add(this.label33);
             this.groupBox2.Controls.Add(this.trainTime);
-            this.groupBox2.Controls.Add(this.label18);
-            this.groupBox2.Controls.Add(this.errorBox);
             this.groupBox2.Controls.Add(this.arm1speed2);
             this.groupBox2.Controls.Add(this.arm1speed3);
             this.groupBox2.Controls.Add(this.trainingState);
@@ -784,29 +778,124 @@
             this.groupBox2.Controls.Add(this.connectionState);
             this.groupBox2.Controls.Add(this.label15);
             this.groupBox2.Location = new System.Drawing.Point(13, 14);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox2.Size = new System.Drawing.Size(1261, 612);
             this.groupBox2.TabIndex = 47;
             this.groupBox2.TabStop = false;
             this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter_1);
             // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label37.Location = new System.Drawing.Point(812, 315);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(35, 22);
+            this.label37.TabIndex = 93;
+            this.label37.Text = "cm";
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label36.Location = new System.Drawing.Point(768, 350);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(24, 22);
+            this.label36.TabIndex = 92;
+            this.label36.Text = "R";
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label35.Location = new System.Drawing.Point(686, 350);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(28, 22);
+            this.label35.TabIndex = 91;
+            this.label35.Text = "M";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label34.Location = new System.Drawing.Point(618, 350);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(23, 22);
+            this.label34.TabIndex = 90;
+            this.label34.Text = "L";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label18.Location = new System.Drawing.Point(563, 266);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(123, 22);
+            this.label18.TabIndex = 89;
+            this.label18.Text = "Rat location :";
+            // 
+            // ratPosR
+            // 
+            this.ratPosR.Enabled = false;
+            this.ratPosR.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.ratPosR.Location = new System.Drawing.Point(749, 312);
+            this.ratPosR.MaxLength = 4;
+            this.ratPosR.Name = "ratPosR";
+            this.ratPosR.Size = new System.Drawing.Size(57, 33);
+            this.ratPosR.TabIndex = 88;
+            this.ratPosR.Text = "0";
+            // 
+            // ratPosM
+            // 
+            this.ratPosM.Enabled = false;
+            this.ratPosM.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.ratPosM.Location = new System.Drawing.Point(671, 312);
+            this.ratPosM.MaxLength = 4;
+            this.ratPosM.Name = "ratPosM";
+            this.ratPosM.Size = new System.Drawing.Size(57, 33);
+            this.ratPosM.TabIndex = 87;
+            this.ratPosM.Text = "0";
+            // 
+            // ratPosL
+            // 
+            this.ratPosL.Enabled = false;
+            this.ratPosL.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.ratPosL.Location = new System.Drawing.Point(599, 312);
+            this.ratPosL.MaxLength = 4;
+            this.ratPosL.Name = "ratPosL";
+            this.ratPosL.Size = new System.Drawing.Size(57, 33);
+            this.ratPosL.TabIndex = 86;
+            this.ratPosL.Text = "0";
+            // 
+            // stopButton
+            // 
+            this.stopButton.Enabled = false;
+            this.stopButton.Font = new System.Drawing.Font("新細明體", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.stopButton.Location = new System.Drawing.Point(751, 406);
+            this.stopButton.Name = "stopButton";
+            this.stopButton.Size = new System.Drawing.Size(178, 94);
+            this.stopButton.TabIndex = 85;
+            this.stopButton.Text = "Stop";
+            this.stopButton.UseVisualStyleBackColor = true;
+            this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
+            // 
             // label28
             // 
             this.label28.AutoSize = true;
             this.label28.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label28.Location = new System.Drawing.Point(37, 443);
+            this.label28.Location = new System.Drawing.Point(38, 441);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(145, 21);
+            this.label28.Size = new System.Drawing.Size(102, 21);
             this.label28.TabIndex = 84;
-            this.label28.Text = "Com port select :";
+            this.label28.Text = "COM port :";
             // 
             // serialPortSelect
             // 
             this.serialPortSelect.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.serialPortSelect.FormattingEnabled = true;
-            this.serialPortSelect.Location = new System.Drawing.Point(41, 491);
+            this.serialPortSelect.Location = new System.Drawing.Point(42, 489);
             this.serialPortSelect.Name = "serialPortSelect";
             this.serialPortSelect.Size = new System.Drawing.Size(121, 29);
             this.serialPortSelect.TabIndex = 83;
@@ -815,7 +904,7 @@
             // 
             this.label32.AutoSize = true;
             this.label32.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label32.Location = new System.Drawing.Point(853, 88);
+            this.label32.Location = new System.Drawing.Point(812, 88);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(98, 22);
             this.label32.TabIndex = 82;
@@ -824,103 +913,95 @@
             // label33
             // 
             this.label33.AutoSize = true;
-            this.label33.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label33.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label33.Location = new System.Drawing.Point(563, 88);
             this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(151, 22);
+            this.label33.Size = new System.Drawing.Size(129, 21);
             this.label33.TabIndex = 81;
             this.label33.Text = "Training Time:";
             // 
             // trainTime
             // 
             this.trainTime.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.trainTime.Location = new System.Drawing.Point(740, 85);
+            this.trainTime.Location = new System.Drawing.Point(699, 85);
             this.trainTime.MaxLength = 4;
             this.trainTime.Name = "trainTime";
             this.trainTime.Size = new System.Drawing.Size(107, 33);
             this.trainTime.TabIndex = 80;
-            this.trainTime.Text = "0";
+            this.trainTime.Text = "1";
             // 
             // arm1speed2
             // 
+            this.arm1speed2.DecimalPlaces = 1;
             this.arm1speed2.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.arm1speed2.Increment = new decimal(new int[] {
-            5,
+            25,
             0,
             0,
-            0});
-            this.arm1speed2.Location = new System.Drawing.Point(182, 129);
-            this.arm1speed2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            65536});
+            this.arm1speed2.Location = new System.Drawing.Point(185, 129);
+            this.arm1speed2.Margin = new System.Windows.Forms.Padding(2);
             this.arm1speed2.Maximum = new decimal(new int[] {
-            20,
+            125,
             0,
             0,
-            0});
-            this.arm1speed2.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
+            65536});
             this.arm1speed2.Name = "arm1speed2";
-            this.arm1speed2.Size = new System.Drawing.Size(53, 33);
+            this.arm1speed2.ReadOnly = true;
+            this.arm1speed2.Size = new System.Drawing.Size(57, 33);
             this.arm1speed2.TabIndex = 79;
             this.arm1speed2.Value = new decimal(new int[] {
             10,
             0,
             0,
             0});
+            this.arm1speed2.ValueChanged += new System.EventHandler(this.arm1speed2_ValueChanged);
             // 
             // arm1speed3
             // 
+            this.arm1speed3.DecimalPlaces = 1;
             this.arm1speed3.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.arm1speed3.Increment = new decimal(new int[] {
-            5,
+            25,
             0,
             0,
-            0});
-            this.arm1speed3.Location = new System.Drawing.Point(257, 129);
-            this.arm1speed3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            65536});
+            this.arm1speed3.Location = new System.Drawing.Point(263, 129);
+            this.arm1speed3.Margin = new System.Windows.Forms.Padding(2);
             this.arm1speed3.Maximum = new decimal(new int[] {
-            20,
+            125,
             0,
             0,
-            0});
-            this.arm1speed3.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
+            65536});
             this.arm1speed3.Name = "arm1speed3";
-            this.arm1speed3.Size = new System.Drawing.Size(53, 33);
+            this.arm1speed3.ReadOnly = true;
+            this.arm1speed3.Size = new System.Drawing.Size(57, 33);
             this.arm1speed3.TabIndex = 78;
             this.arm1speed3.Value = new decimal(new int[] {
-            15,
+            5,
             0,
             0,
             0});
             // 
             // arm2speed1
             // 
+            this.arm2speed1.DecimalPlaces = 1;
             this.arm2speed1.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.arm2speed1.Increment = new decimal(new int[] {
-            5,
+            25,
             0,
             0,
-            0});
+            65536});
             this.arm2speed1.Location = new System.Drawing.Point(113, 177);
-            this.arm2speed1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.arm2speed1.Margin = new System.Windows.Forms.Padding(2);
             this.arm2speed1.Maximum = new decimal(new int[] {
-            20,
+            125,
             0,
             0,
-            0});
-            this.arm2speed1.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
+            65536});
             this.arm2speed1.Name = "arm2speed1";
-            this.arm2speed1.Size = new System.Drawing.Size(53, 33);
+            this.arm2speed1.ReadOnly = true;
+            this.arm2speed1.Size = new System.Drawing.Size(57, 33);
             this.arm2speed1.TabIndex = 76;
             this.arm2speed1.Value = new decimal(new int[] {
             5,
@@ -930,26 +1011,23 @@
             // 
             // arm2speed2
             // 
+            this.arm2speed2.DecimalPlaces = 1;
             this.arm2speed2.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.arm2speed2.Increment = new decimal(new int[] {
-            5,
+            25,
             0,
             0,
-            0});
-            this.arm2speed2.Location = new System.Drawing.Point(182, 177);
-            this.arm2speed2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            65536});
+            this.arm2speed2.Location = new System.Drawing.Point(185, 177);
+            this.arm2speed2.Margin = new System.Windows.Forms.Padding(2);
             this.arm2speed2.Maximum = new decimal(new int[] {
-            20,
+            125,
             0,
             0,
-            0});
-            this.arm2speed2.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
+            65536});
             this.arm2speed2.Name = "arm2speed2";
-            this.arm2speed2.Size = new System.Drawing.Size(53, 33);
+            this.arm2speed2.ReadOnly = true;
+            this.arm2speed2.Size = new System.Drawing.Size(57, 33);
             this.arm2speed2.TabIndex = 75;
             this.arm2speed2.Value = new decimal(new int[] {
             10,
@@ -959,55 +1037,49 @@
             // 
             // arm2speed3
             // 
+            this.arm2speed3.DecimalPlaces = 1;
             this.arm2speed3.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.arm2speed3.Increment = new decimal(new int[] {
-            5,
+            25,
             0,
             0,
-            0});
-            this.arm2speed3.Location = new System.Drawing.Point(257, 177);
-            this.arm2speed3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            65536});
+            this.arm2speed3.Location = new System.Drawing.Point(263, 177);
+            this.arm2speed3.Margin = new System.Windows.Forms.Padding(2);
             this.arm2speed3.Maximum = new decimal(new int[] {
-            20,
+            125,
             0,
             0,
-            0});
-            this.arm2speed3.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
+            65536});
             this.arm2speed3.Name = "arm2speed3";
-            this.arm2speed3.Size = new System.Drawing.Size(53, 33);
+            this.arm2speed3.ReadOnly = true;
+            this.arm2speed3.Size = new System.Drawing.Size(57, 33);
             this.arm2speed3.TabIndex = 74;
             this.arm2speed3.Value = new decimal(new int[] {
-            15,
+            5,
             0,
             0,
             0});
             // 
             // arm3speed1
             // 
+            this.arm3speed1.DecimalPlaces = 1;
             this.arm3speed1.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.arm3speed1.Increment = new decimal(new int[] {
-            5,
+            25,
             0,
             0,
-            0});
+            65536});
             this.arm3speed1.Location = new System.Drawing.Point(113, 233);
-            this.arm3speed1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.arm3speed1.Margin = new System.Windows.Forms.Padding(2);
             this.arm3speed1.Maximum = new decimal(new int[] {
-            20,
+            125,
             0,
             0,
-            0});
-            this.arm3speed1.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
+            65536});
             this.arm3speed1.Name = "arm3speed1";
-            this.arm3speed1.Size = new System.Drawing.Size(53, 33);
+            this.arm3speed1.ReadOnly = true;
+            this.arm3speed1.Size = new System.Drawing.Size(57, 33);
             this.arm3speed1.TabIndex = 72;
             this.arm3speed1.Value = new decimal(new int[] {
             5,
@@ -1017,26 +1089,23 @@
             // 
             // arm3speed2
             // 
+            this.arm3speed2.DecimalPlaces = 1;
             this.arm3speed2.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.arm3speed2.Increment = new decimal(new int[] {
-            5,
+            25,
             0,
             0,
-            0});
-            this.arm3speed2.Location = new System.Drawing.Point(182, 233);
-            this.arm3speed2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            65536});
+            this.arm3speed2.Location = new System.Drawing.Point(185, 233);
+            this.arm3speed2.Margin = new System.Windows.Forms.Padding(2);
             this.arm3speed2.Maximum = new decimal(new int[] {
-            20,
+            125,
             0,
             0,
-            0});
-            this.arm3speed2.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
+            65536});
             this.arm3speed2.Name = "arm3speed2";
-            this.arm3speed2.Size = new System.Drawing.Size(53, 33);
+            this.arm3speed2.ReadOnly = true;
+            this.arm3speed2.Size = new System.Drawing.Size(57, 33);
             this.arm3speed2.TabIndex = 71;
             this.arm3speed2.Value = new decimal(new int[] {
             10,
@@ -1046,29 +1115,26 @@
             // 
             // arm3speed3
             // 
+            this.arm3speed3.DecimalPlaces = 1;
             this.arm3speed3.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.arm3speed3.Increment = new decimal(new int[] {
-            5,
+            25,
             0,
             0,
-            0});
-            this.arm3speed3.Location = new System.Drawing.Point(257, 233);
-            this.arm3speed3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            65536});
+            this.arm3speed3.Location = new System.Drawing.Point(263, 233);
+            this.arm3speed3.Margin = new System.Windows.Forms.Padding(2);
             this.arm3speed3.Maximum = new decimal(new int[] {
-            20,
+            125,
             0,
             0,
-            0});
-            this.arm3speed3.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
+            65536});
             this.arm3speed3.Name = "arm3speed3";
-            this.arm3speed3.Size = new System.Drawing.Size(53, 33);
+            this.arm3speed3.ReadOnly = true;
+            this.arm3speed3.Size = new System.Drawing.Size(57, 33);
             this.arm3speed3.TabIndex = 69;
             this.arm3speed3.Value = new decimal(new int[] {
-            15,
+            5,
             0,
             0,
             0});
@@ -1077,7 +1143,7 @@
             // 
             this.label31.AutoSize = true;
             this.label31.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label31.Location = new System.Drawing.Point(317, 235);
+            this.label31.Location = new System.Drawing.Point(329, 235);
             this.label31.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(64, 22);
@@ -1088,7 +1154,7 @@
             // 
             this.label30.AutoSize = true;
             this.label30.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label30.Location = new System.Drawing.Point(317, 184);
+            this.label30.Location = new System.Drawing.Point(329, 184);
             this.label30.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(64, 22);
@@ -1099,7 +1165,7 @@
             // 
             this.label29.AutoSize = true;
             this.label29.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label29.Location = new System.Drawing.Point(317, 136);
+            this.label29.Location = new System.Drawing.Point(329, 136);
             this.label29.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(64, 22);
@@ -1110,23 +1176,23 @@
             // 
             this.label27.AutoSize = true;
             this.label27.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label27.Location = new System.Drawing.Point(253, 89);
+            this.label27.Location = new System.Drawing.Point(259, 89);
             this.label27.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(61, 22);
             this.label27.TabIndex = 64;
-            this.label27.Text = "50 cm";
+            this.label27.Text = "70 cm";
             // 
             // label26
             // 
             this.label26.AutoSize = true;
             this.label26.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label26.Location = new System.Drawing.Point(178, 89);
+            this.label26.Location = new System.Drawing.Point(181, 89);
             this.label26.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(61, 22);
             this.label26.TabIndex = 63;
-            this.label26.Text = "30 cm";
+            this.label26.Text = "40 cm";
             // 
             // label25
             // 
@@ -1192,26 +1258,23 @@
             // 
             // arm1speed1
             // 
+            this.arm1speed1.DecimalPlaces = 1;
             this.arm1speed1.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.arm1speed1.Increment = new decimal(new int[] {
-            5,
+            25,
             0,
             0,
-            0});
+            65536});
             this.arm1speed1.Location = new System.Drawing.Point(113, 129);
-            this.arm1speed1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.arm1speed1.Margin = new System.Windows.Forms.Padding(2);
             this.arm1speed1.Maximum = new decimal(new int[] {
-            20,
+            125,
             0,
             0,
-            0});
-            this.arm1speed1.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
+            65536});
             this.arm1speed1.Name = "arm1speed1";
-            this.arm1speed1.Size = new System.Drawing.Size(53, 33);
+            this.arm1speed1.ReadOnly = true;
+            this.arm1speed1.Size = new System.Drawing.Size(57, 33);
             this.arm1speed1.TabIndex = 37;
             this.arm1speed1.Value = new decimal(new int[] {
             5,
@@ -1295,8 +1358,6 @@
         private System.Windows.Forms.TextBox connectionState;
         private System.Windows.Forms.TextBox trainingState;
         private System.Windows.Forms.Timer networkTimer;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.TextBox errorBox;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.TextBox resultFilePath;
         private System.Windows.Forms.Button pathSelectButton;
@@ -1342,6 +1403,15 @@
         private System.Windows.Forms.TextBox trainTime;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.ComboBox serialPortSelect;
+        private System.Windows.Forms.Button stopButton;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox ratPosR;
+        private System.Windows.Forms.TextBox ratPosM;
+        private System.Windows.Forms.TextBox ratPosL;
     }
 }
 

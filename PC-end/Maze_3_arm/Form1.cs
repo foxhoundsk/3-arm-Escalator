@@ -1,4 +1,4 @@
-﻿// ver 1.0.0
+﻿// ver 1.1.0
 /*
  WARN: SINCE WRONG GIT BRANCH, HERE SHOULD ONLY CHENGE ONE SECTION WITH COMMENT BUG WHEN MERGE BACK TO MASTER
  1. after received data, ack didnt return properly.
@@ -36,15 +36,13 @@ namespace Maze_3_arm
         byte[] recvBuffer       = new byte[64]; 
         byte[] dataBuffer       = new byte[100];
         byte[] sendBuffer       = new byte[6] {114, 100, 0, 0, 0, 0};
-        ushort[] DACtable = new ushort[3] { 0x020d, 0x041a, 0x0628 }; /* speed from low to high as index from 0 ~ max */
+        ushort[] DACtable = new ushort[6] { 0x0, 0x0106, 0x020d, 0x03b1, 0x0521, 0x0628 }; /* 0.75(element 4) was 0x041a *//* speed from low to high as index from 0 ~ max */
+        //ushort[] DACtable = new ushort[6] { 0x0, 0x020d, 0x041a, 0x0521, 0x0628 };
         byte[] DACspeed = new byte[6] { 0, 0, 0, 0, 0, 0 };
         FileStream resultFileStream;
         StreamWriter resultStreamWriter;
         static ThreadStart recvThread = new ThreadStart(Work.taskRecvThread);
         Thread newThread = new Thread(recvThread);
-        bool isTrainingFisrtTime = true;
-        uint ratRouteIndex = 18;
-        uint deadcode = 0;
         long endTimestamp;
 
         SerialPort serialPort = new SerialPort();
@@ -188,6 +186,7 @@ namespace Maze_3_arm
                         arm_Info.netState = connectionStatus.CONNECTED;
                         globalBuffer.g_dataNeedProcess = false;
                         receiveDataList.Clear();
+                        stopButton.Enabled = true;
                     }
                     break;
                 case connectionStatus.CONNECTED:
@@ -209,7 +208,8 @@ namespace Maze_3_arm
                         arm_Info.netState = connectionStatus.END_TRAINING_IN_PROGRESS;
                         break;
                     }
-                    ushort ratPos, recordPos = 0;
+                    ushort ratPos;
+                    float recordPos = 0;
                     trainingState.Text = "In Progress";                    
                     if (!globalBuffer.g_dataNeedProcess)
                         break;
@@ -222,18 +222,18 @@ namespace Maze_3_arm
                         {
                             case 0:
                                 switch (receiveDataList[i])
-                                {
+                                {                                    
                                     case 1:
-                                        DACspeed[0] = (byte)DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm1speed1".ToString(), true)[0]).Value)) / 5) - 1)];
-                                        DACspeed[1] = (byte)(DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm1speed1".ToString(), true)[0]).Value)) / 5) - 1)] >> 8);
+                                        DACspeed[0] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed1".ToString(), true)[0]).Value)) / 2.5) )];
+                                        DACspeed[1] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed1".ToString(), true)[0]).Value)) / 2.5))] >> 8);
                                         break;
                                     case 2:
-                                        DACspeed[0] = (byte)DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm1speed2".ToString(), true)[0]).Value)) / 5) - 1)];
-                                        DACspeed[1] = (byte)(DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm1speed2".ToString(), true)[0]).Value)) / 5) - 1)] >> 8);
+                                        DACspeed[0] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed2".ToString(), true)[0]).Value)) / 2.5))];
+                                        DACspeed[1] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed2".ToString(), true)[0]).Value)) / 2.5))] >> 8);
                                         break;
                                     case 3:
-                                        DACspeed[0] = (byte)DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm1speed3".ToString(), true)[0]).Value)) / 5) - 1)];
-                                        DACspeed[1] = (byte)(DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm1speed3".ToString(), true)[0]).Value)) / 5) - 1)] >> 8);
+                                        DACspeed[0] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed3".ToString(), true)[0]).Value)) / 2.5) )];
+                                        DACspeed[1] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed3".ToString(), true)[0]).Value)) / 2.5) )] >> 8);
                                         break;                                        
                                 }
                                 break;
@@ -241,16 +241,16 @@ namespace Maze_3_arm
                                 switch (receiveDataList[i])
                                 {
                                     case 1:
-                                        DACspeed[2] = (byte)DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm2speed1".ToString(), true)[0]).Value)) / 5) - 1)];
-                                        DACspeed[3] = (byte)(DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm2speed1".ToString(), true)[0]).Value)) / 5) - 1)] >> 8);
+                                        DACspeed[2] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed1".ToString(), true)[0]).Value)) / 2.5) )];
+                                        DACspeed[3] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed1".ToString(), true)[0]).Value)) / 2.5) )] >> 8);
                                         break;
                                     case 2:
-                                        DACspeed[2] = (byte)DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm2speed2".ToString(), true)[0]).Value)) / 5) - 1)];
-                                        DACspeed[3] = (byte)(DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm2speed2".ToString(), true)[0]).Value)) / 5) - 1)] >> 8);
+                                        DACspeed[2] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed2".ToString(), true)[0]).Value)) / 2.5) )];
+                                        DACspeed[3] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed2".ToString(), true)[0]).Value)) / 2.5) )] >> 8);
                                         break;
                                     case 3:
-                                        DACspeed[2] = (byte)DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm2speed3".ToString(), true)[0]).Value)) / 5) - 1)];
-                                        DACspeed[3] = (byte)(DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm2speed3".ToString(), true)[0]).Value)) / 5) - 1)] >> 8);
+                                        DACspeed[2] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed3".ToString(), true)[0]).Value)) / 2.5))];
+                                        DACspeed[3] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed3".ToString(), true)[0]).Value)) / 2.5) )] >> 8);
                                         break;
                                 }                                
                                 break;
@@ -258,71 +258,152 @@ namespace Maze_3_arm
                                 switch (receiveDataList[i])
                                 {
                                     case 1:
-                                        DACspeed[4] = (byte)DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm3speed1".ToString(), true)[0]).Value)) / 5) - 1)];
-                                        DACspeed[5] = (byte)(DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm3speed1".ToString(), true)[0]).Value)) / 5) - 1)] >> 8);
+                                        DACspeed[4] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed1".ToString(), true)[0]).Value)) / 2.5) )];
+                                        DACspeed[5] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed1".ToString(), true)[0]).Value)) / 2.5))] >> 8);
                                         break;
                                     case 2:
-                                        DACspeed[4] = (byte)DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm3speed2".ToString(), true)[0]).Value)) / 5) - 1)];
-                                        DACspeed[5] = (byte)(DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm3speed2".ToString(), true)[0]).Value)) / 5) - 1)] >> 8);
+                                        DACspeed[4] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed2".ToString(), true)[0]).Value)) / 2.5))];
+                                        DACspeed[5] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed2".ToString(), true)[0]).Value)) / 2.5))] >> 8);
                                         break;
                                     case 3:
-                                        DACspeed[4] = (byte)DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm3speed3".ToString(), true)[0]).Value)) / 5) - 1)];
-                                        DACspeed[5] = (byte)(DACtable[(((Decimal.ToByte(((NumericUpDown)Controls.Find("arm3speed3".ToString(), true)[0]).Value)) / 5) - 1)] >> 8);
+                                        DACspeed[4] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed3".ToString(), true)[0]).Value)) / 2.5) )];
+                                        DACspeed[5] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed3".ToString(), true)[0]).Value)) / 2.5))] >> 8);
                                         break;
                                 }                                
                                 break;
                         }                            
                     }
-
                     /*----------Data Record-----------*/
+                    ushort speed;
                     ratPos = receiveDataList[0];
+                    /*---------------------ratPos representation----*/
                     switch (ratPos)
                     {
-                        case 0:
-                            recordPos = 5; /* 5 stands for 5 m/min, etc...*/
-                            break;
                         case 1:
-                            recordPos = 10;
+                            ratPosL.Text = "10";
+                            ratPos = 10;
                             break;
                         case 2:
-                            recordPos = 15;
+                            ratPosL.Text = "40";
+                            ratPos = 40;
                             break;
-                        /* POS case 3 deprecated since we changed total POS from 4 to 3 */
+                        case 3:
+                            ratPosL.Text = "70";
+                            ratPos = 70;
+                            break;
                     }
-                    resultStreamWriter.WriteLine(ratPos.ToString() + "  " + recordPos.ToString());
-                    resultStreamWriter.Flush();
+                    /*----------------------------------------------*/
+                    speed = (ushort)(DACspeed[1] << 8);
+                    speed |= DACspeed[0];                    
+                    switch (speed) //  0x0, 0x020d, 0x041a, 0x0628
+                    {
+                        case 0:
+                            recordPos = 0; /* 5 stands for 5 m/min */
+                            break;
+                        case 0x0106:
+                            recordPos = 2.5f;
+                            break;
+                        case 0x020d:
+                            recordPos = 5;
+                            break;
+                        case 0x041a:
+                            recordPos = 7.5f;
+                            break;
+                        case 0x0521:
+                            recordPos = 10;
+                            break;
+                        case 0x0628:
+                            recordPos = 12.5f;
+                            break;
+                            /* POS case 3 deprecated since we changed total POS from 4 to 3 */
+                    }
+                    resultStreamWriter.WriteLine("L: " + ratPos.ToString() + "cm" + "  " + recordPos.ToString() + " m/min");
                     ratPos = receiveDataList[1];
+                    /*---------------------ratPos representation----*/
                     switch (ratPos)
                     {
-                        case 0:
-                            recordPos = 5;
-                            break;
                         case 1:
-                            recordPos = 10;
+                            ratPosM.Text = "10";
+                            ratPos = 10;
                             break;
                         case 2:
-                            recordPos = 15;
+                            ratPosM.Text = "40";
+                            ratPos = 40;
+                            break;
+                        case 3:
+                            ratPosM.Text = "70";
+                            ratPos = 70;
                             break;
                     }
-                    resultStreamWriter.WriteLine(ratPos.ToString() + "  " + recordPos.ToString());
-                    resultStreamWriter.Flush();
+                    /*----------------------------------------------*/
+                    speed = (ushort)(DACspeed[3] << 8);
+                    speed |= DACspeed[2];
+                    switch (speed) //  0x0, 0x020d, 0x041a, 0x0628
+                    {
+                        case 0:
+                            recordPos = 0; /* 5 stands for 5 m/min */
+                            break;
+                        case 0x0106:
+                            recordPos = 2.5f;
+                            break;
+                        case 0x020d:
+                            recordPos = 5;
+                            break;
+                        case 0x041a:
+                            recordPos = 7.5f;
+                            break;
+                        case 0x0521:
+                            recordPos = 10;
+                            break;
+                        case 0x0628:
+                            recordPos = 12.5f;
+                            break;
+                    }
+                    resultStreamWriter.WriteLine("M: " + ratPos.ToString() + "cm" + "  " + recordPos.ToString() + " m/min");
                     ratPos = receiveDataList[2]; /* WARN: (MUST FIX IN MASTER BRANCH)bug fixed */
+                    /*---------------------ratPos representation----*/
                     switch (ratPos)
                     {
-                        case 0:
-                            recordPos = 5;
-                            break;
                         case 1:
-                            recordPos = 10;
+                            ratPosR.Text = "10";
+                            ratPos = 10;
                             break;
                         case 2:
-                            recordPos = 15;
+                            ratPosR.Text = "40";
+                            ratPos = 40;
+                            break;
+                        case 3:
+                            ratPosR.Text = "70";
+                            ratPos = 70;
                             break;
                     }
-                    resultStreamWriter.WriteLine(ratPos.ToString() + "  " + recordPos.ToString());
+                    /*----------------------------------------------*/
+                    speed = (ushort)(DACspeed[5] << 8);
+                    speed |= DACspeed[4];
+                    switch (speed) //  0x0, 0x020d, 0x041a, 0x0628
+                    {
+                        case 0:
+                            recordPos = 0; /* 5 stands for 5 m/min */
+                            break;
+                        case 0x0106:
+                            recordPos = 2.5f;
+                            break;
+                        case 0x020d:
+                            recordPos = 5;
+                            break;
+                        case 0x041a:
+                            recordPos = 7.5f;
+                            break;
+                        case 0x0521:
+                            recordPos = 10;
+                            break;
+                        case 0x0628:
+                            recordPos = 12.5f;
+                            break;
+                    }                    
+                    resultStreamWriter.WriteLine("R: " + ratPos.ToString() + "cm" + "  " + recordPos.ToString() + " m/min" + "\r\n");
                     resultStreamWriter.Flush();
-                    resultStreamWriter.WriteLine();
-                    resultStreamWriter.Flush();
+                    
                     /*--------------------------------*/
                     //this line and following line is used in wifi module. globalBuffer.g_recvSocketfd.SendTo(DACspeed, 6, SocketFlags.None, remoteIpInfo); /* send ACK back */
                     //Array.Clear(globalBuffer.g_recvBuffer, 0, globalBuffer.g_recvBuffer.Length);
@@ -361,16 +442,22 @@ namespace Maze_3_arm
                     }
                     break;
                 case connectionStatus.TRAINING_END:
-                    resultStreamWriter.Close();
-                    resultFileStream.Close();
+                    resultStreamWriter.Write("---------End of training---------" + "\r\n\r\n");
+                    ratPosL.Text = "0";
+                    ratPosM.Text = "0";
+                    ratPosR.Text = "0";
+                    serialPort.Close();
+                    resultStreamWriter.Close();                    
                     trainingState.Text = "Training end";
                     startButton.BackColor = Color.LawnGreen;
                     Console.Beep(1000, 1500);
-                    Thread.Sleep(500);
-                    Console.Beep(1000, 1500);
+                    //Thread.Sleep(500);
+                    //Console.Beep(1000, 1500);
                     //Thread.Sleep(1000);
                     //Console.Beep(1000, 1500);
                     networkTimer.Enabled = false;
+                    stopButton.Enabled = false;
+                    globalBuffer.g_dataNeedProcess = false;
                     break;                                    
            }
         }
@@ -387,18 +474,7 @@ namespace Maze_3_arm
         }
 
         private void startButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                resultFileStream = (System.IO.FileStream)resultFileDialog.OpenFile();
-                resultStreamWriter = new StreamWriter(resultFileStream);
-            }
-            catch
-            {                
-                resultFilePath.Text = "File path error";
-                resultFilePath.ForeColor = Color.Red;
-                return;
-            }
+        {            
             try
             {
                 serialPortSelect.ForeColor = SystemColors.WindowText;
@@ -429,13 +505,23 @@ namespace Maze_3_arm
                 serialPortSelect.Text = "Port error";
                 return;
             }
-
+            try
+            {
+                resultStreamWriter = new StreamWriter(resultFileDialog.FileName, true);
+            }
+            catch
+            {
+                resultFilePath.Text = "File path error";
+                resultFilePath.ForeColor = Color.Red;
+                return;
+            }
             endTimestamp = getCurrentTimestamp() + long.Parse(trainTime.Text) * 60;
             resultFilePath.ForeColor = Color.Black;
             resultFilePath.Text = resultFileDialog.FileName;
             startButton.BackColor = Color.Orange;
             timerTimeElapsed.Enabled = true;
-            networkTimer.Enabled = true;
+            arm_Info.netState = connectionStatus.CONNECTED_KNOCK_DOOR;
+            networkTimer.Enabled = true;            
             return;
         }
 
@@ -449,6 +535,8 @@ namespace Maze_3_arm
             timeLeft.Text = ((endTimestamp - getCurrentTimestamp()) / 60).ToString() + " : " + ((endTimestamp - getCurrentTimestamp()) % 60).ToString();
             /*
             if ((endTimestamp - getCurrentTimestamp() / 60 == 0) && (endTimestamp - getCurrentTimestamp() % 60 <= 0))
+            {
+            {
             {
                 //maybe it has something to de. networkTimer.Enabled = false;
                 /* STOP ALL HERE 
@@ -469,6 +557,18 @@ namespace Maze_3_arm
         }
 
         private void groupBox2_Enter_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void stopButton_Click(object sender, EventArgs e)
+        {
+            timerTimeElapsed.Enabled = false;
+            timeLeft.Text = "0 : 0";
+            arm_Info.netState = connectionStatus.END_TRAINING_IN_PROGRESS;          
+        }
+
+        private void arm1speed2_ValueChanged(object sender, EventArgs e)
         {
 
         }
