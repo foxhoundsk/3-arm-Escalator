@@ -1,4 +1,4 @@
-// Ver 3.0.0
+// Ver 3.0.1
 /*
     1. Since the complicate step to setup wifi module(esp8266), we temporary deprecated the wifi transfer method and use USB-TTL instead.
 
@@ -28,7 +28,7 @@ void main()
     Init();
     uartInit();
     wifiInit();
-    BC_EN = BC_DISCONNECTED /*BC_CONNECTED*/; /* since we are now temporary using UART to send training data instead of wifi module, hence we assign UART to Board Controller to send data through usb virtual port directly */
+    BC_EN = BC_CONNECTED /*BC_CONNECTED*/; /* since we are now temporary using UART to send training data instead of wifi module, hence we assign UART to Board Controller to send data through usb virtual port directly */
     LED0 = 1; /* this indicate that sys is still breathing(~LED0 in interrupt) */
     IE_EA = 1;
         
