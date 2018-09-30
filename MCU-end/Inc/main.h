@@ -15,8 +15,6 @@
 
 void Init(void);
 void ADC_setAutoScanInputs(uint8_t startChannel, uint8_t numChannels); /* @param 0~19 indicates p0.1 ~ p2.6 exclude p0.3 @param number of channels want to convert, maximum is 4 */
-void DAC_Disable(void);
-void DAC_Enable(void);
 
 
 typedef struct

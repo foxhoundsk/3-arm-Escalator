@@ -131,7 +131,6 @@ bool uartIsDataKnockDoor(void)	/* with this implementation, data similarity shou
 		memset(&wifiSendBuffer, 0, SEND_BUFFER_SIZE);
 		memset(&wifiRecvBuffer, 0, RECV_BUFFER_SIZE);
 		uart.Tstate = IDLE;	/* training is about to begin */
-		DAC_Enable();
 		return true;
 	}
 	/* WARN: with this implementation, we must guarantee that there are no other data sent at KNOCK_DOOR state, otherwise it will make mcu starts training once received some data (TODO) */
@@ -176,7 +175,6 @@ bool uartIsEndTrainData(void)	/* with this implementation, data similarity shoul
 		SFRPAGE = index;
 		wifi.currentTick = mcu.sysTick;
 		while ((wifi.currentTick + DAC_APPLY_TIME) >= mcu.sysTick);
-		DAC_Disable();
 		wifi.currentTick = 0;
 		/*--------------------------*/
 		memset(&wifiRecvBuffer, 0, RECV_BUFFER_SIZE);

@@ -1,4 +1,4 @@
-// Ver 3.0.1
+// Ver 3.1.1
 /*
     1. Since the complicate step to setup wifi module(esp8266), we temporary deprecated the wifi transfer method and use USB-TTL instead.
 
@@ -46,26 +46,6 @@ void main()
         uartTransmission();
         escalatorProcess();
     }
-}
-
-void DAC_Disable(void)
-{
-    uint8_t savedPage = SFRPAGE;
-    SFRPAGE = 0x30;
-
-    DAC0CF0 &= 0x7f;
-
-    SFRPAGE = savedPage;    
-}
-
-void DAC_Enable(void)
-{
-    uint8_t savedPage = SFRPAGE;
-    SFRPAGE = 0x30;
-
-    DAC0CF0 |= 0x80;
-
-    SFRPAGE = savedPage;
 }
 
 void ADC_enableAutoScan(scan_t* pbuffer, uint8_t numElements)
