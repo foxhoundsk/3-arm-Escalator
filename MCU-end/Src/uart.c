@@ -1,6 +1,7 @@
 #include "uart.h"
 #include "esp8266.h"
 #include "main.h"
+#include "escalator.h"
 
 extern volatile Wifi wifi;
 extern volatile Escalator escalator;
@@ -8,6 +9,7 @@ extern volatile uint8_t pdata wifiSendBuffer[SEND_BUFFER_SIZE];
 extern volatile uint8_t pdata wifiRecvBuffer[RECV_BUFFER_SIZE];
 volatile Uart uart;
 extern volatile Mcu mcu;
+extern const uint8_t SPEED_TABLE[6];
 
 /* WARN: TODO: if this func encountered 0(null) in sendbuffer it will treat it as end of data then stop counting data requeste to send */
 void uartSend(uint8_t* buffer, uint8_t byteWaiting)
@@ -53,7 +55,7 @@ void uartIsDataQueue(void)
 {
 	if (wifi.isDataChanged) /* the flag is cleared once DAC data send back */
 	{
-		wifiPosDataEncode();
+		wifiPosDataEncode();		
 		uartSend(&wifiSendBuffer, UART_DAC_SIZE);
 	}
 }
@@ -92,11 +94,11 @@ void uartTransmission(void)
 			}
 			break;
 		case RX_DONE:
-			if (uartIsDataKnockDoor())	break;	/* this determination style may implement to esp8266.c */
+			if (uartIsDataKnockDoor())	break;	/* now, Im not recommend this style due to its exploitibility */
 			if (uartIsEndTrainData())	break;		
 			uartApplyDACData();
 			wifi.isDataChanged = 0;
-			uart.Tstate = IDLE;
+			uart.Tstate = IDLE;		
 			memset(&wifiSendBuffer, 0, SEND_BUFFER_SIZE);
 			memset(&wifiRecvBuffer, 0, RECV_BUFFER_SIZE);
 			break;
@@ -119,8 +121,11 @@ void uartApplyDACData(void)
 	SFRPAGE = savedpage;
 }
 
-bool uartIsDataKnockDoor(void)	/* with this implementation, data similarity should be considered, AND WARN THAT IF THE PACKET IS MALFORMED*/
+bool uartIsDataKnockDoor(void)	/* with this implementation, data similarity should be considered, AND WARN THAT IF THE PACKET IS MALFORMED */
 {
+	if (wifiRecvBuffer[0] >> 7) /* verify mode bit */
+		escalator.mode = AUTO_SPEED;
+	wifiRecvBuffer[0] &= 0x7f; /* clear mode bit */
 	if ((wifiRecvBuffer[0] == 'R') && (wifiRecvBuffer[1] == 'D') && (wifiRecvBuffer[2] == 'Y'))	
 	{		
 		wifiSendBuffer[0] = 'A';
@@ -155,6 +160,9 @@ bool uartIsEndTrainData(void)	/* with this implementation, data similarity shoul
 		uart.state = STANDBY;
 		/* re-init training args and reset DAC---- */		
 		escalator.intervalFlag = 0;
+		escalator.mode = NORMAL;
+		escalator.autoSpeedTick = 0;
+		escalator.queueTask = 0;
     	for (index = 0; index < 3; index++)
     	{
     	    escalator.arm[index].variability[0] = 0;
@@ -176,6 +184,7 @@ bool uartIsEndTrainData(void)	/* with this implementation, data similarity shoul
 		wifi.currentTick = mcu.sysTick;
 		while ((wifi.currentTick + DAC_APPLY_TIME) >= mcu.sysTick);
 		wifi.currentTick = 0;
+		mcu.sysTick = 0;
 		/*--------------------------*/
 		memset(&wifiRecvBuffer, 0, RECV_BUFFER_SIZE);
 		memset(&wifiSendBuffer, 0, SEND_BUFFER_SIZE);
