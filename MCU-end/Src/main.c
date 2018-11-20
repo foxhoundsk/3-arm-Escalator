@@ -20,8 +20,7 @@ volatile uint8_t CONVERSION_COMPLETE = 0;
 extern volatile Escalator escalator;
 extern volatile Uart uart;
 extern const uint16_t SPEED_TABLE[6];
-extern volatile Wifi wifi;
-#define GET_SPEED_LEVEL(rawDAC) 
+extern volatile Wifi wifi; 
 SI_SBIT (LED0, SFR_P1, 4);    
 SI_SBIT (BC_EN, SFR_P2, 2);
 
