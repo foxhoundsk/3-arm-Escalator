@@ -19,6 +19,12 @@ typedef enum
     POS_INIT
 }RAT_POS;
 
+typedef enum
+{
+    NORMAL = 1,
+    AUTO_SPEED
+}MODE;
+
 typedef struct
 {
     uint32_t variability[4];
@@ -30,6 +36,9 @@ typedef struct
 {
     Arm arm[3];
     uint8_t intervalFlag;
+    MODE mode;
+    uint32_t autoSpeedTick;
+    uint8_t queueTask;
 }Escalator;
 
 

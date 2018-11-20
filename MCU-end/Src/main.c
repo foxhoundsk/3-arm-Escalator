@@ -1,4 +1,4 @@
-// Ver 3.1.1
+// Ver 3.2.0
 /*
     1. Since the complicate step to setup wifi module(esp8266), we temporary deprecated the wifi transfer method and use USB-TTL instead.
 
@@ -18,6 +18,10 @@ SI_LOCATED_VARIABLE_NO_INIT(adc_buf[NUM_SCANS], scan_t, SI_SEG_XDATA, BUFFER_STA
 volatile Mcu mcu;
 volatile uint8_t CONVERSION_COMPLETE = 0;
 extern volatile Escalator escalator;
+extern volatile Uart uart;
+extern const uint16_t SPEED_TABLE[6];
+extern volatile Wifi wifi;
+#define GET_SPEED_LEVEL(rawDAC) 
 SI_SBIT (LED0, SFR_P1, 4);    
 SI_SBIT (BC_EN, SFR_P2, 2);
 
@@ -38,14 +42,128 @@ void main()
 
     while(1)
     {
-		
-        /*
-        DAC test use (deprecated) 
-        */
         //wifiProcess(); re-enable once wifi got smooth setup and cleanup
         uartTransmission();
         escalatorProcess();
+        taskHandler();
     }
+}
+/* flush out done task */
+void taskUpdate(void)
+{
+    escalator.queueTask >>= 2;
+}
+
+void levelupSpeed(uint16_t dac, uint8_t num)
+{
+    uint8_t i;
+    for (i = 0; i < 4; i++)
+    {
+        if (dac == SPEED_TABLE[i])
+        {            
+            dac = SPEED_TABLE[i + 2]; /* level up two level of speed */
+            if (dac == 0x0628)
+                LED0 = 0;
+            switch (num)
+            {
+                case 0:                   
+                    DAC0L = (uint8_t) dac & 0xff; /* As spec mentioned, DAC low byte should be write first */                    
+                    DAC0H = (uint8_t) ((dac >> 8) & 0xff);
+                    return;
+                case 1:
+                    DAC1L = (uint8_t) dac & 0xff;
+                    DAC1H = (uint8_t) ((dac >> 8) & 0xff);
+                    return;
+                case 2:
+                    DAC2L = (uint8_t) dac & 0xff;
+                    DAC2H = (uint8_t) ((dac >> 8) & 0xff);
+                    return;
+            }
+        }
+    }
+}
+
+void taskProcess(void)
+{
+    uint8_t savedpage, idx; /* may declare inside the task */
+    uint16_t DACval;    
+    switch (escalator.queueTask & 0x3) /* clarify the task */
+    {
+        case 0:            
+            break; /* no task queuing */
+        case 1:
+            /* increase speed by one or two level */
+            if (mcu.sysTick >= escalator.autoSpeedTick)
+            {                
+                escalator.autoSpeedTick += 10000;
+                /* level up DAC speed here */
+                savedpage = SFRPAGE;
+                SFRPAGE = PG4_PAGE;
+
+                for (idx = 0; idx < 3; idx++)
+                {
+                    DACval = 0; /* reset for each use to prevent trash value */
+                    if (idx == 0)
+                    {
+                        DACval |= DAC0H;                        
+                        DACval <<= 8;                        
+                        DACval |= DAC0L;                         
+                        levelupSpeed(DACval, idx);
+                    }
+                    else if (idx == 1)
+                    {
+                        DACval |= DAC1H;
+                        DACval <<= 8;
+                        DACval |= DAC1L;
+                        levelupSpeed(DACval, idx);
+                    }
+                    else
+                    {
+                        DACval |= DAC2H;
+                        DACval <<= 8;
+                        DACval |= DAC2L;
+                        levelupSpeed(DACval, idx);
+                    }
+                    
+                }
+                SFRPAGE = savedpage;
+            }
+            else /* task not done yet */
+                return;
+            break;
+        case 2: /* this task don't need time check like case 1 since it */ 
+            if (mcu.sysTick >= escalator.autoSpeedTick)
+            {
+                escalator.mode = NORMAL;
+                escalator.queueTask |= 0xC; /* TODO: (this can be done in a func which find 00 field then insert new task) WARN: BE AWARE IF NEW KIND OF TASK ADD IN THE FUTURE, THIS WILL BE A MONSTER */
+                wifi.isDataChanged = 1; /* force sent loc to get a speed at 30 sec */
+            }
+            else
+                return;            
+            break;
+        case 3:
+            if (uart.Tstate != IDLE) /* wait the application of speed from PC */
+                return;
+            escalator.mode = AUTO_SPEED;
+            break;
+        default:
+            return; /* nothing processed */
+    }
+    taskUpdate();
+}
+
+void taskHandler(void)
+{
+    if (escalator.mode == AUTO_SPEED && uart.Tstate == IDLE)
+    {
+        /* may add task if there is no task */
+        if (!escalator.queueTask) /* no task remained, we add task here */
+        {             
+            escalator.queueTask = 0x25; /* 3 tasks, which 10 01 01 stands for MANUAL_SPEED, autoSpeed and autoSpeed respectively */
+            escalator.autoSpeedTick = mcu.sysTick + 10000;
+        }
+    }
+    taskProcess();
 }
 
 void ADC_enableAutoScan(scan_t* pbuffer, uint8_t numElements)
@@ -229,6 +347,9 @@ void Init(void)
     mcu.sysTick = 0;
 
     escalator.intervalFlag = 0;
+    escalator.mode = NORMAL;
+    escalator.autoSpeedTick = 0;
+    escalator.queueTask = 0;
     for (index = 0; index < 3; index++)
     {
         escalator.arm[index].variability[0] = 0;

@@ -77,16 +77,16 @@ void TIMER2_ISR(void) interrupt TIMER2_IRQn
     TMR2CN0_TF2H = 0;
     
     mcu.sysTick++;
-    if (/*(wifi.state == RUNNING_TRAINING) &&*/ (mcu.sysTick % 1000 == 0))
+    /*
+    if (mcu.sysTick % 1000 == 0)
     {
-        LED0 = ~LED0;
-        //LED0 = 0;
-        
+                
     }
-    
+    */
     if ((mcu.sysTick % 500) == 0)
     {
         escalator.intervalFlag = 1;
+        //LED0 = ~LED0;
     }
 
     if ((mcu.sysTick % 10) == 0)
@@ -100,7 +100,7 @@ void TIMER2_ISR(void) interrupt TIMER2_IRQn
         SFRPAGE = savedPage;
     }
     /*
-    if (adc_buf[0] > 950)
+    if (adc_buf[0] > 950)   debug code
     {
         LED0 = 1;
     }

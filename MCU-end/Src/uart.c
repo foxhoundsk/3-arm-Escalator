@@ -9,8 +9,8 @@ extern volatile uint8_t pdata wifiSendBuffer[SEND_BUFFER_SIZE];
 extern volatile uint8_t pdata wifiRecvBuffer[RECV_BUFFER_SIZE];
 volatile Uart uart;
 extern volatile Mcu mcu;
-extern const uint8_t SPEED_TABLE[6];
-
+extern const uint16_t SPEED_TABLE[6];
+/* debug */ SI_SBIT (LED0, SFR_P1, 4);
 /* WARN: TODO: if this func encountered 0(null) in sendbuffer it will treat it as end of data then stop counting data requeste to send */
 void uartSend(uint8_t* buffer, uint8_t byteWaiting)
 {
@@ -54,8 +54,12 @@ void uartSend(uint8_t* buffer, uint8_t byteWaiting)
 void uartIsDataQueue(void)
 {
 	if (wifi.isDataChanged) /* the flag is cleared once DAC data send back */
-	{
-		wifiPosDataEncode();		
+	{			
+		wifiPosDataEncode();
+		
+		if (escalator.mode & 0x2) /* DAC speed is not needed in this mode, hence we OR it */
+			wifiSendBuffer[0] |= 0x80;
+
 		uartSend(&wifiSendBuffer, UART_DAC_SIZE);
 	}
 }
@@ -96,7 +100,7 @@ void uartTransmission(void)
 		case RX_DONE:
 			if (uartIsDataKnockDoor())	break;	/* now, Im not recommend this style due to its exploitibility */
 			if (uartIsEndTrainData())	break;		
-			uartApplyDACData();
+			if (escalator.mode == NORMAL) uartApplyDACData();
 			wifi.isDataChanged = 0;
 			uart.Tstate = IDLE;		
 			memset(&wifiSendBuffer, 0, SEND_BUFFER_SIZE);
@@ -123,9 +127,25 @@ void uartApplyDACData(void)
 
 bool uartIsDataKnockDoor(void)	/* with this implementation, data similarity should be considered, AND WARN THAT IF THE PACKET IS MALFORMED */
 {
+	uint8_t savedpage;
 	if (wifiRecvBuffer[0] >> 7) /* verify mode bit */
+	{
 		escalator.mode = AUTO_SPEED;
-	wifiRecvBuffer[0] &= 0x7f; /* clear mode bit */
+		wifiRecvBuffer[0] &= 0x7f; /* clear mode bit */
+
+		savedpage = SFRPAGE;
+
+		SFRPAGE = PG4_PAGE;
+		/* set all motor to the lowest speed */
+		DAC0L = (uint8_t) (SPEED_TABLE[1] & 0xff);
+		DAC0H = (uint8_t) (SPEED_TABLE[1] >> 8);
+		DAC1L = (uint8_t) (SPEED_TABLE[1] & 0xff);
+		DAC1H = (uint8_t) (SPEED_TABLE[1] >> 8);
+		DAC2L = (uint8_t) (SPEED_TABLE[1] & 0xff);
+		DAC2H = (uint8_t) (SPEED_TABLE[1] >> 8);
+
+		SFRPAGE = savedpage;
+	}
 	if ((wifiRecvBuffer[0] == 'R') && (wifiRecvBuffer[1] == 'D') && (wifiRecvBuffer[2] == 'Y'))	
 	{		
 		wifiSendBuffer[0] = 'A';
