@@ -8,8 +8,9 @@ extern volatile uint8_t CONVERSION_COMPLETE;
 extern volatile Wifi wifi;
 extern volatile Uart uart;
 extern volatile scan_t xdata adc_buf[1];
+const uint16_t SPEED_TABLE[6] = { 0x0, 0x0106, 0x020d, 0x03b1, 0x0521, 0x0628};
 
-/* TODO: if very early state the escalator should run? */
+/* TODO: if very early state the escalator should run? A: don't know how a DAC with 0 can run */
 void escalatorProcess(void)
 {   
     uint8_t index, index2; /* for loop and array index use (WARN) */
