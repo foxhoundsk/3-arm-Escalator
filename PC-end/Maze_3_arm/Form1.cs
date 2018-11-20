@@ -1,4 +1,4 @@
-﻿// ver 1.1.0
+﻿// ver 1.2.0
 /*
  WARN: SINCE WRONG GIT BRANCH, HERE SHOULD ONLY CHENGE ONE SECTION WITH COMMENT BUG WHEN MERGE BACK TO MASTER
  1. after received data, ack didnt return properly.
@@ -24,9 +24,9 @@ using System.Collections.Generic;
 
 namespace Maze_3_arm
 {
+
     
-    
-    
+
     public partial class Form1 : Form
     {
         //Socket serverFd;
@@ -51,6 +51,7 @@ namespace Maze_3_arm
         byte timeoutCount = 0;
 
         module_Info arm_Info;
+        Escalator escalator = new Escalator();
         public void DoRemoteIpInfoCast()
         {
             Remote = (EndPoint)remoteIpInfo; /* receiveFrom use this as its arg */
@@ -78,6 +79,7 @@ namespace Maze_3_arm
             RUNNING,
             COMPLETE         
         }
+        
         public struct module_Info
         {
             public short[]          shortTermError;
@@ -115,7 +117,28 @@ namespace Maze_3_arm
             globalBuffer.g_dataNeedProcess = false;
             //DoRemoteIpInfoCast();   /* init variable since it cast a var which initialize with _new_, so with func call, we can guarantee that its been initialized */
             /* enable network timer and do a regular check to network state */
-            networkTimer.Interval   = 100;
+            networkTimer.Interval = 100;
+            
+            /*------init auto speed ADT----------------*/
+            escalator.escalator = new RatLocRecord[3];
+            for (int i = 0; i < 3; ++i)
+            {
+                escalator.escalator[i] = new RatLocRecord
+                {
+                    occur = new Occurance[30]
+                };
+                for (int x = 0; x < 30; ++x)
+                {
+                    escalator.escalator[i].occur[x] = new Occurance
+                    {
+                        loc = 0,
+                        timeStay = 0
+                    };
+                }
+                escalator.escalator[i].count = 0;
+                escalator.escalator[i].preLoc = 1;
+            }
+            /*----------------------------------------*/
         }
 
         private void onSerialPortReceive(Object sender, SerialDataReceivedEventArgs e)
@@ -156,7 +179,10 @@ namespace Maze_3_arm
                     
                     Array.Clear(recvBuffer, 0, recvBuffer.Length);
                     */
-                    serialPort.Write(knockDoorConst, 0, 3);
+                    if (!isAutoSpeed.Checked)
+                        serialPort.Write(knockDoorConst, 0, 3);
+                    else
+                        serialPort.Write(new byte[3] { 0xD2, (byte)'D', (byte)'Y'}, 0, 3);
                     arm_Info.netState = connectionStatus.CONNECTED_KNOCK_DOOR_WAIT;
                     if (getCurrentTimestamp() >= endTimestamp) /* IF NEED RESTART WITHOUT RESTART THE APPM CONFIGUR HERE */
                     {
@@ -216,63 +242,177 @@ namespace Maze_3_arm
                         // send corresponding DAC here, use following func to send 
                         /* C# is big-endian */
                     //Decimal.ToByte(((NumericUpDown)Controls.Find("arm1speed1".ToString(), true)[0]).Value);//arm1speed1
-                    for (ushort i = 0; i < 3; i++)
+                    /*-------------------prepare DAC speed and output through UART----------------------*/
+                    if (!isAutoSpeed.Checked)
                     {
-                        switch (i)
+                        for (ushort i = 0; i < 3; i++)
                         {
-                            case 0:
-                                switch (receiveDataList[i])
-                                {                                    
-                                    case 1:
-                                        DACspeed[0] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed1".ToString(), true)[0]).Value)) / 2.5) )];
-                                        DACspeed[1] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed1".ToString(), true)[0]).Value)) / 2.5))] >> 8);
-                                        break;
-                                    case 2:
-                                        DACspeed[0] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed2".ToString(), true)[0]).Value)) / 2.5))];
-                                        DACspeed[1] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed2".ToString(), true)[0]).Value)) / 2.5))] >> 8);
-                                        break;
-                                    case 3:
-                                        DACspeed[0] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed3".ToString(), true)[0]).Value)) / 2.5) )];
-                                        DACspeed[1] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed3".ToString(), true)[0]).Value)) / 2.5) )] >> 8);
-                                        break;                                        
-                                }
-                                break;
-                            case 1:
-                                switch (receiveDataList[i])
-                                {
-                                    case 1:
-                                        DACspeed[2] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed1".ToString(), true)[0]).Value)) / 2.5) )];
-                                        DACspeed[3] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed1".ToString(), true)[0]).Value)) / 2.5) )] >> 8);
-                                        break;
-                                    case 2:
-                                        DACspeed[2] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed2".ToString(), true)[0]).Value)) / 2.5) )];
-                                        DACspeed[3] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed2".ToString(), true)[0]).Value)) / 2.5) )] >> 8);
-                                        break;
-                                    case 3:
-                                        DACspeed[2] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed3".ToString(), true)[0]).Value)) / 2.5))];
-                                        DACspeed[3] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed3".ToString(), true)[0]).Value)) / 2.5) )] >> 8);
-                                        break;
-                                }                                
-                                break;
-                            case 2:
-                                switch (receiveDataList[i])
-                                {
-                                    case 1:
-                                        DACspeed[4] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed1".ToString(), true)[0]).Value)) / 2.5) )];
-                                        DACspeed[5] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed1".ToString(), true)[0]).Value)) / 2.5))] >> 8);
-                                        break;
-                                    case 2:
-                                        DACspeed[4] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed2".ToString(), true)[0]).Value)) / 2.5))];
-                                        DACspeed[5] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed2".ToString(), true)[0]).Value)) / 2.5))] >> 8);
-                                        break;
-                                    case 3:
-                                        DACspeed[4] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed3".ToString(), true)[0]).Value)) / 2.5) )];
-                                        DACspeed[5] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed3".ToString(), true)[0]).Value)) / 2.5))] >> 8);
-                                        break;
-                                }                                
-                                break;
-                        }                            
+                            switch (i)
+                            {
+                                case 0:
+                                    switch (receiveDataList[i])
+                                    {
+                                        case 1:
+                                            DACspeed[0] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed1".ToString(), true)[0]).Value)) / 2.5))];
+                                            DACspeed[1] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed1".ToString(), true)[0]).Value)) / 2.5))] >> 8);
+                                            break;
+                                        case 2:
+                                            DACspeed[0] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed2".ToString(), true)[0]).Value)) / 2.5))];
+                                            DACspeed[1] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed2".ToString(), true)[0]).Value)) / 2.5))] >> 8);
+                                            break;
+                                        case 3:
+                                            DACspeed[0] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed3".ToString(), true)[0]).Value)) / 2.5))];
+                                            DACspeed[1] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed3".ToString(), true)[0]).Value)) / 2.5))] >> 8);
+                                            break;
+                                    }
+                                    break;
+                                case 1:
+                                    switch (receiveDataList[i])
+                                    {
+                                        case 1:
+                                            DACspeed[2] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed1".ToString(), true)[0]).Value)) / 2.5))];
+                                            DACspeed[3] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed1".ToString(), true)[0]).Value)) / 2.5))] >> 8);
+                                            break;
+                                        case 2:
+                                            DACspeed[2] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed2".ToString(), true)[0]).Value)) / 2.5))];
+                                            DACspeed[3] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed2".ToString(), true)[0]).Value)) / 2.5))] >> 8);
+                                            break;
+                                        case 3:
+                                            DACspeed[2] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed3".ToString(), true)[0]).Value)) / 2.5))];
+                                            DACspeed[3] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed3".ToString(), true)[0]).Value)) / 2.5))] >> 8);
+                                            break;
+                                    }
+                                    break;
+                                case 2:
+                                    switch (receiveDataList[i])
+                                    {
+                                        case 1:
+                                            DACspeed[4] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed1".ToString(), true)[0]).Value)) / 2.5))];
+                                            DACspeed[5] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed1".ToString(), true)[0]).Value)) / 2.5))] >> 8);
+                                            break;
+                                        case 2:
+                                            DACspeed[4] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed2".ToString(), true)[0]).Value)) / 2.5))];
+                                            DACspeed[5] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed2".ToString(), true)[0]).Value)) / 2.5))] >> 8);
+                                            break;
+                                        case 3:
+                                            DACspeed[4] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed3".ToString(), true)[0]).Value)) / 2.5))];
+                                            DACspeed[5] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed3".ToString(), true)[0]).Value)) / 2.5))] >> 8);
+                                            break;
+                                    }
+                                    break;
+                            }
+                        }
+                        serialPort.Write(DACspeed, 0, 6);
                     }
+                    else if (receiveDataList[0] >> 7 == 0x1)
+                    {
+                        /* RECORD THE POS AND UPDATE TIME IN AUTO SPEED ADT HERE */
+                        serialPort.Write(DACspeed, 0, 6);
+                        receiveDataList[0] &= 0x7f; /* clear mode bit */
+                        for (ushort i = 0; i < 3; i++)
+                        {
+                            if (!(escalator.escalator[i].count < 30))
+                                continue; /* at most record 30 loc info, then wait for MCU for speed ask */
+                            getTimeStamp(i, escalator.escalator[i].count);
+                            escalator.escalator[i].occur[escalator.escalator[i].count].loc = receiveDataList[i];
+                            escalator.escalator[i].count++;
+                        }
+                    }
+                    else /* output the speed according to the pos record in past 30 sec */
+                    {                        
+                        for (ushort i = 0; i < 3; i++)
+                        {
+                            ushort mostLocIndex = 0;
+                            long mostTimeStamp = 0;
+
+                            if (escalator.escalator[i].count == 1) /* only one loc acquired */
+                            {
+                                escalator.escalator[i].preLoc = escalator.escalator[i].occur[0].loc;
+                                goto applyDACSpeed; /* many says that goto is not a good practice, but it appears many times in linux kernel */
+                            }
+                            else if (escalator.escalator[i].count == 0) /* suppose we didn't get any loc */
+                            {
+                                escalator.escalator[i].preLoc = 2; /* this loc is we defined randomly since we didn't get any loc */
+                                goto applyDACSpeed;
+                            }
+
+                            for (ushort y = 0; y < escalator.escalator[i].count; y++) /* calculate time stay in each location */
+                            {
+                                escalator.escalator[i].occur[y].timeStay = escalator.escalator[i].occur[y + 1].timeStay - escalator.escalator[i].occur[y].timeStay;
+                            }
+                            escalator.escalator[i].occur[escalator.escalator[i].count - 1].timeStay = getCurrentTimestamp() - escalator.escalator[i].occur[escalator.escalator[i].count - 1].timeStay;
+
+                            for (ushort y = 0; y < escalator.escalator[i].count; y++) /* get the longest timeStay */
+                            {
+                                if (escalator.escalator[i].occur[y].timeStay > mostTimeStamp)
+                                {
+                                    mostLocIndex = y;
+                                    mostTimeStamp = escalator.escalator[i].occur[y].timeStay;
+                                }
+                            }
+
+                            escalator.escalator[i].preLoc = escalator.escalator[i].occur[mostLocIndex].loc;
+
+                            applyDACSpeed:
+
+                            switch (i) /* apply the predicted speed to DACspeed buffer */
+                            {
+                                case 0:
+                                    switch (escalator.escalator[i].preLoc)
+                                    {
+                                        case 1:
+                                            DACspeed[0] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed1".ToString(), true)[0]).Value)) / 2.5))];
+                                            DACspeed[1] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed1".ToString(), true)[0]).Value)) / 2.5))] >> 8);
+                                            break;
+                                        case 2:
+                                            DACspeed[0] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed2".ToString(), true)[0]).Value)) / 2.5))];
+                                            DACspeed[1] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed2".ToString(), true)[0]).Value)) / 2.5))] >> 8);
+                                            break;
+                                        case 3:
+                                            DACspeed[0] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed3".ToString(), true)[0]).Value)) / 2.5))];
+                                            DACspeed[1] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm1speed3".ToString(), true)[0]).Value)) / 2.5))] >> 8);
+                                            break;
+                                    }
+                                    break;
+                                case 1:
+                                    switch (escalator.escalator[i].preLoc)
+                                    {
+                                        case 1:
+                                            DACspeed[2] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed1".ToString(), true)[0]).Value)) / 2.5))];
+                                            DACspeed[3] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed1".ToString(), true)[0]).Value)) / 2.5))] >> 8);
+                                            break;
+                                        case 2:
+                                            DACspeed[2] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed2".ToString(), true)[0]).Value)) / 2.5))];
+                                            DACspeed[3] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed2".ToString(), true)[0]).Value)) / 2.5))] >> 8);
+                                            break;
+                                        case 3:
+                                            DACspeed[2] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed3".ToString(), true)[0]).Value)) / 2.5))];
+                                            DACspeed[3] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm2speed3".ToString(), true)[0]).Value)) / 2.5))] >> 8);
+                                            break;
+                                    }
+                                    break;
+                                case 2:
+                                    switch (escalator.escalator[i].preLoc)
+                                    {
+                                        case 1:
+                                            DACspeed[4] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed1".ToString(), true)[0]).Value)) / 2.5))];
+                                            DACspeed[5] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed1".ToString(), true)[0]).Value)) / 2.5))] >> 8);
+                                            break;
+                                        case 2:
+                                            DACspeed[4] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed2".ToString(), true)[0]).Value)) / 2.5))];
+                                            DACspeed[5] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed2".ToString(), true)[0]).Value)) / 2.5))] >> 8);
+                                            break;
+                                        case 3:
+                                            DACspeed[4] = (byte)DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed3".ToString(), true)[0]).Value)) / 2.5))];
+                                            DACspeed[5] = (byte)(DACtable[(ushort)(((Decimal.ToDouble(((NumericUpDown)Controls.Find("arm3speed3".ToString(), true)[0]).Value)) / 2.5))] >> 8);
+                                            break;
+                                    }
+                                    break;
+                            }       
+                        }
+                        serialPort.Write(DACspeed, 0, 6);
+                    }
+                         
                     /*----------Data Record-----------*/
                     ushort speed;
                     ratPos = receiveDataList[0];
@@ -408,7 +548,6 @@ namespace Maze_3_arm
                     //this line and following line is used in wifi module. globalBuffer.g_recvSocketfd.SendTo(DACspeed, 6, SocketFlags.None, remoteIpInfo); /* send ACK back */
                     //Array.Clear(globalBuffer.g_recvBuffer, 0, globalBuffer.g_recvBuffer.Length);
                     /* uart transmission use-------------------------*/
-                    serialPort.Write(DACspeed, 0, 6); /* we don't clean DACspeed is because that each time we write whole size of it with new data */
                     receiveDataList.Clear();
                     globalBuffer.g_dataNeedProcess = false;
                     /* --------------------------------------------- */
@@ -458,6 +597,22 @@ namespace Maze_3_arm
                     networkTimer.Enabled = false;
                     stopButton.Enabled = false;
                     globalBuffer.g_dataNeedProcess = false;
+                    if (isAutoSpeed.Checked)
+                    {
+                        for (int i = 0; i < 3; ++i)
+                        {
+                            for (int x = 0; x < 30; ++x)
+                            {
+                                escalator.escalator[i].occur[x].loc = 0;
+                                escalator.escalator[i].occur[x].timeStay = 0;
+                            }
+                        }
+                        for (int i = 0; i < 3; ++i)
+                        {
+                            escalator.escalator[i].count = 0;
+                            escalator.escalator[i].preLoc = 1;
+                        }
+                    }                    
                     break;                                    
            }
         }
@@ -474,7 +629,7 @@ namespace Maze_3_arm
         }
 
         private void startButton_Click(object sender, EventArgs e)
-        {            
+        {       
             try
             {
                 serialPortSelect.ForeColor = SystemColors.WindowText;
@@ -521,7 +676,10 @@ namespace Maze_3_arm
             startButton.BackColor = Color.Orange;
             timerTimeElapsed.Enabled = true;
             arm_Info.netState = connectionStatus.CONNECTED_KNOCK_DOOR;
-            networkTimer.Enabled = true;            
+            networkTimer.Enabled = true;
+
+            
+
             return;
         }
 
@@ -572,6 +730,12 @@ namespace Maze_3_arm
         {
 
         }
+
+        /* before about to send the speed data, we just record the timestamp, and we calculate time stayed at time to send speed data */
+        public void getTimeStamp(ushort EsNumIndex, ushort countIndex)
+        {
+            escalator.escalator[EsNumIndex].occur[countIndex].timeStay = getCurrentTimestamp();
+        }
     }
     static class globalBuffer
     {
@@ -621,5 +785,31 @@ namespace Maze_3_arm
             }
         }
 
+    }
+
+    class Occurance
+    {
+        public long timeStay;
+        public byte loc;
+    }
+
+    class RatLocRecord
+    {
+        public Occurance[] occur;
+        public byte count;
+        public byte preLoc;
+        public RatLocRecord()
+        {
+            occur = new Occurance[] { };
+        }
+    }
+
+    class Escalator
+    {
+        public RatLocRecord[] escalator;
+        public Escalator()
+        {
+            escalator = new RatLocRecord[] { };
+        }
     }
 }

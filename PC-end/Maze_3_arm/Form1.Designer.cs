@@ -123,6 +123,7 @@
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.arm1speed1 = new System.Windows.Forms.NumericUpDown();
+            this.isAutoSpeed = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBoxFood.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -140,7 +141,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("新細明體", 26F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label1.Font = new System.Drawing.Font("PMingLiU", 26F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label1.Location = new System.Drawing.Point(452, 264);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(321, 35);
@@ -151,7 +152,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label2.Font = new System.Drawing.Font("PMingLiU", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label2.Location = new System.Drawing.Point(87, 84);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(71, 21);
@@ -197,7 +198,7 @@
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.groupBox1.Font = new System.Drawing.Font("PMingLiU", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.groupBox1.Location = new System.Drawing.Point(9, 97);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(795, 435);
@@ -327,7 +328,7 @@
             // timeElapsed
             // 
             this.timeElapsed.Enabled = false;
-            this.timeElapsed.Font = new System.Drawing.Font("新細明體", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.timeElapsed.Font = new System.Drawing.Font("PMingLiU", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.timeElapsed.Location = new System.Drawing.Point(456, 309);
             this.timeElapsed.Name = "timeElapsed";
             this.timeElapsed.Size = new System.Drawing.Size(315, 123);
@@ -552,7 +553,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label9.Font = new System.Drawing.Font("PMingLiU", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label9.Location = new System.Drawing.Point(87, 175);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(71, 21);
@@ -562,7 +563,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label8.Font = new System.Drawing.Font("PMingLiU", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label8.Location = new System.Drawing.Point(87, 219);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(71, 21);
@@ -572,7 +573,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label7.Font = new System.Drawing.Font("PMingLiU", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label7.Location = new System.Drawing.Point(87, 264);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(71, 21);
@@ -582,7 +583,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label6.Font = new System.Drawing.Font("PMingLiU", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label6.Location = new System.Drawing.Point(87, 309);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(71, 21);
@@ -592,7 +593,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label5.Font = new System.Drawing.Font("PMingLiU", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label5.Location = new System.Drawing.Point(87, 355);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(71, 21);
@@ -602,7 +603,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label4.Font = new System.Drawing.Font("PMingLiU", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label4.Location = new System.Drawing.Point(87, 399);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(71, 21);
@@ -612,7 +613,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label3.Font = new System.Drawing.Font("PMingLiU", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label3.Location = new System.Drawing.Point(87, 129);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(71, 21);
@@ -622,7 +623,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("新細明體", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label15.Font = new System.Drawing.Font("PMingLiU", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label15.Location = new System.Drawing.Point(37, 15);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(197, 27);
@@ -632,7 +633,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label16.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label16.Location = new System.Drawing.Point(563, 152);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(137, 22);
@@ -642,7 +643,7 @@
             // connectionState
             // 
             this.connectionState.Enabled = false;
-            this.connectionState.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.connectionState.Font = new System.Drawing.Font("PMingLiU", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.connectionState.Location = new System.Drawing.Point(239, 11);
             this.connectionState.Name = "connectionState";
             this.connectionState.Size = new System.Drawing.Size(305, 33);
@@ -652,7 +653,7 @@
             // trainingState
             // 
             this.trainingState.Enabled = false;
-            this.trainingState.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.trainingState.Font = new System.Drawing.Font("PMingLiU", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.trainingState.Location = new System.Drawing.Point(567, 179);
             this.trainingState.Multiline = true;
             this.trainingState.Name = "trainingState";
@@ -667,7 +668,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label20.Font = new System.Drawing.Font("PMingLiU", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label20.Location = new System.Drawing.Point(37, 307);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(127, 21);
@@ -676,7 +677,7 @@
             // 
             // resultFilePath
             // 
-            this.resultFilePath.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.resultFilePath.Font = new System.Drawing.Font("PMingLiU", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.resultFilePath.Location = new System.Drawing.Point(41, 356);
             this.resultFilePath.Name = "resultFilePath";
             this.resultFilePath.Size = new System.Drawing.Size(441, 30);
@@ -699,8 +700,8 @@
             // 
             // startButton
             // 
-            this.startButton.Font = new System.Drawing.Font("新細明體", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.startButton.Location = new System.Drawing.Point(567, 406);
+            this.startButton.Font = new System.Drawing.Font("PMingLiU", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.startButton.Location = new System.Drawing.Point(565, 464);
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(178, 94);
             this.startButton.TabIndex = 44;
@@ -715,7 +716,7 @@
             // 
             // ratRoute
             // 
-            this.ratRoute.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.ratRoute.Font = new System.Drawing.Font("PMingLiU", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.ratRoute.Location = new System.Drawing.Point(813, 365);
             this.ratRoute.Multiline = true;
             this.ratRoute.Name = "ratRoute";
@@ -726,7 +727,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label17.Font = new System.Drawing.Font("PMingLiU", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label17.Location = new System.Drawing.Point(809, 329);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(93, 21);
@@ -735,6 +736,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.isAutoSpeed);
             this.groupBox2.Controls.Add(this.label37);
             this.groupBox2.Controls.Add(this.label36);
             this.groupBox2.Controls.Add(this.label35);
@@ -789,7 +791,7 @@
             // label37
             // 
             this.label37.AutoSize = true;
-            this.label37.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label37.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label37.Location = new System.Drawing.Point(812, 315);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(35, 22);
@@ -799,7 +801,7 @@
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label36.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label36.Location = new System.Drawing.Point(768, 350);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(24, 22);
@@ -809,7 +811,7 @@
             // label35
             // 
             this.label35.AutoSize = true;
-            this.label35.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label35.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label35.Location = new System.Drawing.Point(686, 350);
             this.label35.Name = "label35";
             this.label35.Size = new System.Drawing.Size(28, 22);
@@ -819,7 +821,7 @@
             // label34
             // 
             this.label34.AutoSize = true;
-            this.label34.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label34.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label34.Location = new System.Drawing.Point(618, 350);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(23, 22);
@@ -829,7 +831,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label18.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label18.Location = new System.Drawing.Point(563, 266);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(123, 22);
@@ -839,7 +841,7 @@
             // ratPosR
             // 
             this.ratPosR.Enabled = false;
-            this.ratPosR.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.ratPosR.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.ratPosR.Location = new System.Drawing.Point(749, 312);
             this.ratPosR.MaxLength = 4;
             this.ratPosR.Name = "ratPosR";
@@ -850,7 +852,7 @@
             // ratPosM
             // 
             this.ratPosM.Enabled = false;
-            this.ratPosM.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.ratPosM.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.ratPosM.Location = new System.Drawing.Point(671, 312);
             this.ratPosM.MaxLength = 4;
             this.ratPosM.Name = "ratPosM";
@@ -861,7 +863,7 @@
             // ratPosL
             // 
             this.ratPosL.Enabled = false;
-            this.ratPosL.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.ratPosL.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.ratPosL.Location = new System.Drawing.Point(599, 312);
             this.ratPosL.MaxLength = 4;
             this.ratPosL.Name = "ratPosL";
@@ -872,8 +874,8 @@
             // stopButton
             // 
             this.stopButton.Enabled = false;
-            this.stopButton.Font = new System.Drawing.Font("新細明體", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.stopButton.Location = new System.Drawing.Point(751, 406);
+            this.stopButton.Font = new System.Drawing.Font("PMingLiU", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.stopButton.Location = new System.Drawing.Point(749, 464);
             this.stopButton.Name = "stopButton";
             this.stopButton.Size = new System.Drawing.Size(178, 94);
             this.stopButton.TabIndex = 85;
@@ -884,7 +886,7 @@
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label28.Font = new System.Drawing.Font("PMingLiU", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label28.Location = new System.Drawing.Point(38, 441);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(102, 21);
@@ -893,7 +895,7 @@
             // 
             // serialPortSelect
             // 
-            this.serialPortSelect.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.serialPortSelect.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.serialPortSelect.FormattingEnabled = true;
             this.serialPortSelect.Location = new System.Drawing.Point(42, 489);
             this.serialPortSelect.Name = "serialPortSelect";
@@ -903,7 +905,7 @@
             // label32
             // 
             this.label32.AutoSize = true;
-            this.label32.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label32.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label32.Location = new System.Drawing.Point(812, 88);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(98, 22);
@@ -913,7 +915,7 @@
             // label33
             // 
             this.label33.AutoSize = true;
-            this.label33.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label33.Font = new System.Drawing.Font("PMingLiU", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label33.Location = new System.Drawing.Point(563, 88);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(129, 21);
@@ -922,7 +924,7 @@
             // 
             // trainTime
             // 
-            this.trainTime.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.trainTime.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.trainTime.Location = new System.Drawing.Point(699, 85);
             this.trainTime.MaxLength = 4;
             this.trainTime.Name = "trainTime";
@@ -933,7 +935,7 @@
             // arm1speed2
             // 
             this.arm1speed2.DecimalPlaces = 1;
-            this.arm1speed2.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.arm1speed2.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.arm1speed2.Increment = new decimal(new int[] {
             25,
             0,
@@ -960,7 +962,7 @@
             // arm1speed3
             // 
             this.arm1speed3.DecimalPlaces = 1;
-            this.arm1speed3.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.arm1speed3.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.arm1speed3.Increment = new decimal(new int[] {
             25,
             0,
@@ -986,7 +988,7 @@
             // arm2speed1
             // 
             this.arm2speed1.DecimalPlaces = 1;
-            this.arm2speed1.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.arm2speed1.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.arm2speed1.Increment = new decimal(new int[] {
             25,
             0,
@@ -1012,7 +1014,7 @@
             // arm2speed2
             // 
             this.arm2speed2.DecimalPlaces = 1;
-            this.arm2speed2.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.arm2speed2.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.arm2speed2.Increment = new decimal(new int[] {
             25,
             0,
@@ -1038,7 +1040,7 @@
             // arm2speed3
             // 
             this.arm2speed3.DecimalPlaces = 1;
-            this.arm2speed3.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.arm2speed3.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.arm2speed3.Increment = new decimal(new int[] {
             25,
             0,
@@ -1064,7 +1066,7 @@
             // arm3speed1
             // 
             this.arm3speed1.DecimalPlaces = 1;
-            this.arm3speed1.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.arm3speed1.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.arm3speed1.Increment = new decimal(new int[] {
             25,
             0,
@@ -1090,7 +1092,7 @@
             // arm3speed2
             // 
             this.arm3speed2.DecimalPlaces = 1;
-            this.arm3speed2.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.arm3speed2.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.arm3speed2.Increment = new decimal(new int[] {
             25,
             0,
@@ -1116,7 +1118,7 @@
             // arm3speed3
             // 
             this.arm3speed3.DecimalPlaces = 1;
-            this.arm3speed3.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.arm3speed3.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.arm3speed3.Increment = new decimal(new int[] {
             25,
             0,
@@ -1142,7 +1144,7 @@
             // label31
             // 
             this.label31.AutoSize = true;
-            this.label31.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label31.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label31.Location = new System.Drawing.Point(329, 235);
             this.label31.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label31.Name = "label31";
@@ -1153,7 +1155,7 @@
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label30.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label30.Location = new System.Drawing.Point(329, 184);
             this.label30.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label30.Name = "label30";
@@ -1164,7 +1166,7 @@
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label29.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label29.Location = new System.Drawing.Point(329, 136);
             this.label29.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label29.Name = "label29";
@@ -1175,7 +1177,7 @@
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label27.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label27.Location = new System.Drawing.Point(259, 89);
             this.label27.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label27.Name = "label27";
@@ -1186,7 +1188,7 @@
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label26.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label26.Location = new System.Drawing.Point(181, 89);
             this.label26.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label26.Name = "label26";
@@ -1197,7 +1199,7 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label25.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label25.Location = new System.Drawing.Point(109, 89);
             this.label25.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label25.Name = "label25";
@@ -1208,7 +1210,7 @@
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label24.Font = new System.Drawing.Font("PMingLiU", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label24.Location = new System.Drawing.Point(625, 15);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(152, 32);
@@ -1217,7 +1219,7 @@
             // 
             // timeLeft
             // 
-            this.timeLeft.Font = new System.Drawing.Font("新細明體", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.timeLeft.Font = new System.Drawing.Font("PMingLiU", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.timeLeft.Location = new System.Drawing.Point(793, 13);
             this.timeLeft.Name = "timeLeft";
             this.timeLeft.Size = new System.Drawing.Size(97, 40);
@@ -1226,7 +1228,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label23.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label23.Location = new System.Drawing.Point(41, 235);
             this.label23.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label23.Name = "label23";
@@ -1237,7 +1239,7 @@
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label22.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label22.Location = new System.Drawing.Point(41, 179);
             this.label22.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label22.Name = "label22";
@@ -1248,7 +1250,7 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label21.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label21.Location = new System.Drawing.Point(41, 131);
             this.label21.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label21.Name = "label21";
@@ -1259,7 +1261,7 @@
             // arm1speed1
             // 
             this.arm1speed1.DecimalPlaces = 1;
-            this.arm1speed1.Font = new System.Drawing.Font("新細明體", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.arm1speed1.Font = new System.Drawing.Font("PMingLiU", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.arm1speed1.Increment = new decimal(new int[] {
             25,
             0,
@@ -1281,6 +1283,17 @@
             0,
             0,
             0});
+            // 
+            // isAutoSpeed
+            // 
+            this.isAutoSpeed.AutoSize = true;
+            this.isAutoSpeed.Font = new System.Drawing.Font("PMingLiU", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.isAutoSpeed.Location = new System.Drawing.Point(568, 413);
+            this.isAutoSpeed.Name = "isAutoSpeed";
+            this.isAutoSpeed.Size = new System.Drawing.Size(151, 31);
+            this.isAutoSpeed.TabIndex = 94;
+            this.isAutoSpeed.Text = "Auto Speed";
+            this.isAutoSpeed.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -1412,6 +1425,7 @@
         private System.Windows.Forms.TextBox ratPosR;
         private System.Windows.Forms.TextBox ratPosM;
         private System.Windows.Forms.TextBox ratPosL;
+        private System.Windows.Forms.CheckBox isAutoSpeed;
     }
 }
 
