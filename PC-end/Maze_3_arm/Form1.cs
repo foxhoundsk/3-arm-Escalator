@@ -1,4 +1,4 @@
-﻿// ver 1.2.0
+﻿// ver 1.3.0
 /*
  WARN: SINCE WRONG GIT BRANCH, HERE SHOULD ONLY CHENGE ONE SECTION WITH COMMENT BUG WHEN MERGE BACK TO MASTER
  1. after received data, ack didnt return properly.
@@ -597,6 +597,7 @@ namespace Maze_3_arm
                     networkTimer.Enabled = false;
                     stopButton.Enabled = false;
                     globalBuffer.g_dataNeedProcess = false;
+                    isAutoSpeed.Enabled = true;
                     if (isAutoSpeed.Checked)
                     {
                         for (int i = 0; i < 3; ++i)
@@ -677,8 +678,10 @@ namespace Maze_3_arm
             timerTimeElapsed.Enabled = true;
             arm_Info.netState = connectionStatus.CONNECTED_KNOCK_DOOR;
             networkTimer.Enabled = true;
+            isAutoSpeed.Enabled = false;
 
-            
+
+
 
             return;
         }
