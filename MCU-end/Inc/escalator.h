@@ -30,6 +30,9 @@ typedef struct
     uint32_t variability[4];
     uint8_t lastPos;
     uint8_t currentPos;
+    uint8_t isDACSuccessive;
+    uint16_t successiveDACTarget;
+    uint32_t successiveTimestamp;
 }Arm;
 
 typedef struct
