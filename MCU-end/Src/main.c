@@ -1,4 +1,4 @@
-// Ver 3.2.0
+// Ver 3.3.0
 /*
     1. Since the complicate step to setup wifi module(esp8266), we temporary deprecated the wifi transfer method and use USB-TTL instead.
 
@@ -19,7 +19,7 @@ volatile Mcu mcu;
 volatile uint8_t CONVERSION_COMPLETE = 0;
 extern volatile Escalator escalator;
 extern volatile Uart uart;
-extern const uint16_t SPEED_TABLE[6];
+extern const uint16_t xdata SPEED_TABLE[6];
 extern volatile Wifi wifi; 
 SI_SBIT (LED0, SFR_P1, 4);    
 SI_SBIT (BC_EN, SFR_P2, 2);
@@ -45,8 +45,88 @@ void main()
         uartTransmission();
         escalatorProcess();
         taskHandler();
+        successiveDACIncrement();
     }
 }
+
+void successiveDACIncrement(void)
+{
+    uint8_t index, savedpage;
+    uint16_t DACval;
+    savedpage = SFRPAGE;
+    SFRPAGE = PG4_PAGE;
+
+    for (index = 0; index < 3; index++)
+    {
+        if (!escalator.arm[index].isDACSuccessive)
+            continue;
+        if (escalator.arm[index].successiveTimestamp >= mcu.sysTick)
+            continue;
+
+        switch (index)
+        {
+            case 0:
+                DACval = 0;
+                DACval |= DAC0H;                        
+                DACval <<= 8;                        
+                DACval |= DAC0L;
+
+                if (DACval == escalator.arm[0].successiveDACTarget) /* reached target speed */
+                {
+                    escalator.arm[0].isDACSuccessive = 0;
+                    continue;
+                }
+
+                DACval++;
+
+                DAC0L = (uint8_t) DACval & 0xff; /* As spec mentioned, DAC low byte should be write first */
+                DAC0H = (uint8_t) ((DACval >> 8) & 0xff);
+
+                escalator.arm[0].successiveTimestamp = mcu.sysTick + DAC_SUCCESSIVE_TIME_INTERVAL;
+                break;
+            case 1:
+                DACval = 0;
+                DACval |= DAC1H;
+                DACval <<= 8;
+                DACval |= DAC1L;
+
+                if (DACval == escalator.arm[1].successiveDACTarget)
+                {
+                    escalator.arm[1].isDACSuccessive = 0;
+                    continue;
+                }
+
+                DACval++;
+
+                DAC1L = (uint8_t) DACval & 0xff;
+                DAC1H = (uint8_t) ((DACval >> 8) & 0xff);
+
+                escalator.arm[1].successiveTimestamp = mcu.sysTick + DAC_SUCCESSIVE_TIME_INTERVAL;
+                break;
+            case 2:
+                DACval = 0;
+                DACval |= DAC2H;
+                DACval <<= 8;
+                DACval |= DAC2L;
+
+                if (DACval == escalator.arm[2].successiveDACTarget)
+                {
+                    escalator.arm[2].isDACSuccessive = 0;
+                    continue;
+                }
+
+                DACval++;
+
+                DAC2L = (uint8_t) DACval & 0xff;
+                DAC2H = (uint8_t) ((DACval >> 8) & 0xff);
+
+                escalator.arm[2].successiveTimestamp = mcu.sysTick + DAC_SUCCESSIVE_TIME_INTERVAL;
+                break;
+        }            
+    }
+    SFRPAGE = savedpage;
+}
+
 /* flush out done task */
 void taskUpdate(void)
 {
@@ -56,17 +136,18 @@ void taskUpdate(void)
 void levelupSpeed(uint16_t dac, uint8_t num)
 {
     uint8_t i;
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < 5; i++)
     {
         if (dac == SPEED_TABLE[i])
         {            
-            dac = SPEED_TABLE[i + 2]; /* level up two level of speed */
-            if (dac == 0x0628)
-                LED0 = 0;
+            dac = SPEED_TABLE[i + 1]; /* level up two level of speed */
+            escalator.arm[num].isDACSuccessive = 1;
+            escalator.arm[num].successiveDACTarget = dac;
+            /*
             switch (num)
             {
                 case 0:                   
-                    DAC0L = (uint8_t) dac & 0xff; /* As spec mentioned, DAC low byte should be write first */                    
+                    DAC0L = (uint8_t) dac & 0xff; // As spec mentioned, DAC low byte should be write first                  
                     DAC0H = (uint8_t) ((dac >> 8) & 0xff);
                     return;
                 case 1:
@@ -78,6 +159,7 @@ void levelupSpeed(uint16_t dac, uint8_t num)
                     DAC2H = (uint8_t) ((dac >> 8) & 0xff);
                     return;
             }
+            */
         }
     }
 }
@@ -357,6 +439,9 @@ void Init(void)
         escalator.arm[index].variability[3] = 0;
         escalator.arm[index].lastPos = POS_INIT;
         escalator.arm[index].currentPos = 0;
+        escalator.arm[index].isDACSuccessive = 0;
+        escalator.arm[index].successiveDACTarget = 0;
+        escalator.arm[index].successiveTimestamp = 0;
     }
     
     SFRPAGE = PG4_PAGE;
