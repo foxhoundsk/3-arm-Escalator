@@ -12,6 +12,7 @@
 #include "Escalator.h"
 
 #define DAC_APPLY_TIME 25
+#define DAC_SUCCESSIVE_TIME_INTERVAL 15
 
 void Init(void);
 void ADC_setAutoScanInputs(uint8_t startChannel, uint8_t numChannels); /* @param 0~19 indicates p0.1 ~ p2.6 exclude p0.3 @param number of channels want to convert, maximum is 4 */
@@ -19,6 +20,7 @@ void taskHandler(void);
 void taskUpdate(void);
 void taskProcess(void);
 void levelupSpeed(uint16_t dac, uint8_t num);
+void successiveDACIncrement(void);
 
 typedef struct
 {
