@@ -9,7 +9,7 @@ extern volatile uint8_t pdata wifiSendBuffer[SEND_BUFFER_SIZE];
 extern volatile uint8_t pdata wifiRecvBuffer[RECV_BUFFER_SIZE];
 volatile Uart uart;
 extern volatile Mcu mcu;
-extern const uint16_t SPEED_TABLE[6];
+extern const uint16_t xdata SPEED_TABLE[6];
 /* debug */ SI_SBIT (LED0, SFR_P1, 4);
 /* WARN: TODO: if this func encountered 0(null) in sendbuffer it will treat it as end of data then stop counting data requeste to send */
 void uartSend(uint8_t* buffer, uint8_t byteWaiting)
@@ -191,6 +191,9 @@ bool uartIsEndTrainData(void)	/* with this implementation, data similarity shoul
     	    escalator.arm[index].variability[3] = 0;
     	    escalator.arm[index].lastPos = POS_INIT;
     	    escalator.arm[index].currentPos = 0;
+			escalator.arm[index].isDACSuccessive = 0;
+        	escalator.arm[index].successiveDACTarget = 0;
+			escalator.arm[index].successiveTimestamp = 0;
     	}
 		index = SFRPAGE; /* we continued use index to reduce memory usage and index here is simple enough */
 		SFRPAGE = PG4_PAGE;
