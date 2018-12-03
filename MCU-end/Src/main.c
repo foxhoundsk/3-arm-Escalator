@@ -1,4 +1,4 @@
-// Ver 3.3.0
+// Ver 4.3.0
 /*
     1. Since the complicate step to setup wifi module(esp8266), we temporary deprecated the wifi transfer method and use USB-TTL instead.
 
@@ -46,8 +46,43 @@ void main()
         escalatorProcess();
         taskHandler();
         successiveDACIncrement();
+        emergencyStop();
+
     }
 }
+
+void emergencyStop(void)
+{
+    uint8_t savedpage, index;
+    
+    savedpage = SFRPAGE;
+    SFRPAGE = PG4_PAGE;
+
+    for (index = 0; index < 3; index++)
+    {
+        if (escalator.arm[index].currentPos == 0)
+            continue;
+
+        switch (index)
+        {
+            case 0:
+                DAC0L = 0;
+                DAC0H = 0;
+                break;
+            case 1:
+                DAC1L = 0;
+                DAC1H = 0;
+                break;
+            case 2:
+                DAC2L = 0;
+                DAC2H = 0;
+                break;
+        }
+    }
+
+    SFRPAGE = savedpage;
+}
+
 
 void successiveDACIncrement(void)
 {
