@@ -6,21 +6,20 @@ volatile Escalator escalator;
 extern volatile uint8_t CONVERSION_COMPLETE;
 //extern volatile uint16_t xdata adc_buf[3];
 extern volatile Wifi wifi;
+extern volatile Uart uart;
 extern volatile scan_t xdata adc_buf[1];
-const uint16_t SPEED_TABLE[6] = { 0x0, 0x0106, 0x020d, 0x03b1, 0x0521, 0x0628};
+const uint16_t xdata SPEED_TABLE[6] = { 0x0, 0x0106, 0x020d, 0x03b1, 0x0521, 0x0628};
 
-/* TODO: if very early state the escalator should run? Technically, should not,
-         since it may change the pos val at certain circumstance, but we haven't
-         encountered so far */
+/* TODO: if very early state the escalator should run? A: should not, since it may change IR read position */
 void escalatorProcess(void)
 {   
     uint8_t index, index2; /* for loop and array index use (WARN) */
-	/*	WARN: debug use
-    if (wifi.state != RUNNING_TRAINING)
+
+    if (uart.Tstate == WAIT_KNOCK_DOOR)
     {
         return;
     }
-    */
+    
     if (escalator.intervalFlag == 1)
     {
         escalator.intervalFlag = 0;
@@ -39,8 +38,8 @@ void escalatorProcess(void)
             case 0:                
                 if (0x3fd <= adc_buf[0].p1_1 && adc_buf[0].p1_1 <= 0x3ff)  escalator.arm[index].variability[POS_1of4]++;
                 else if (0x0170 <= adc_buf[0].p1_1 && adc_buf[0].p1_1 <= 0x01df) escalator.arm[index].variability[POS_2of4]++;
-                else if (0x00a0 <= adc_buf[0].p1_1 && adc_buf[0].p1_1 <= 0x0100) escalator.arm[index].variability[POS_3of4]++;
-                //else if (0x00a0 <= adc_buf[0].p1_2 && adc_buf[0].p1_2 <= 0x0100) escalator.arm[index].variability[POS_4of4]++;
+                else if (0x00b0 <= adc_buf[0].p1_1 && adc_buf[0].p1_1 <= 0x00f7) escalator.arm[index].variability[POS_3of4]++;
+                //else if (0x00a0 <= adc_buf[0].p1_2 && adc_buf[0].p1_2 <= 0x0fa) escalator.arm[index].variability[POS_4of4]++;
                 for (index2 = 0; index2 < 4; index2++)
                 {
                     if (escalator.arm[index].variability[index2] >= 3000)
