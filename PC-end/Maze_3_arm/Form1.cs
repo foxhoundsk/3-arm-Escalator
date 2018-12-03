@@ -1,4 +1,4 @@
-﻿// ver 1.3.0
+﻿// ver 1.3.1
 /*
  WARN: SINCE WRONG GIT BRANCH, HERE SHOULD ONLY CHENGE ONE SECTION WITH COMMENT BUG WHEN MERGE BACK TO MASTER
  1. after received data, ack didnt return properly.
@@ -350,6 +350,8 @@ namespace Maze_3_arm
                                     mostTimeStamp = escalator.escalator[i].occur[y].timeStay;
                                 }
                             }
+
+                            escalator.escalator[i].count = 0; /* reset counter */
 
                             escalator.escalator[i].preLoc = escalator.escalator[i].occur[mostLocIndex].loc;
 
