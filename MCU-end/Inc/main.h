@@ -21,6 +21,7 @@ void taskUpdate(void);
 void taskProcess(void);
 void levelupSpeed(uint16_t dac, uint8_t num);
 void successiveDACIncrement(void);
+void emergencyStop(void);
 
 typedef struct
 {
