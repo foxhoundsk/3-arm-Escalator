@@ -190,7 +190,7 @@ bool uartIsEndTrainData(void)	/* with this implementation, data similarity shoul
     	    escalator.arm[index].variability[2] = 0;
     	    escalator.arm[index].variability[3] = 0;
     	    escalator.arm[index].lastPos = POS_INIT;
-    	    escalator.arm[index].currentPos = 0;
+    	    escalator.arm[index].currentPos = POS_2of4;
 			escalator.arm[index].isDACSuccessive = 0;
         	escalator.arm[index].successiveDACTarget = 0;
 			escalator.arm[index].successiveTimestamp = 0;

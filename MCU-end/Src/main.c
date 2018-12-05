@@ -60,7 +60,7 @@ void emergencyStop(void)
 
     for (index = 0; index < 3; index++)
     {
-        if (escalator.arm[index].currentPos == 0)
+        if (!(escalator.arm[index].currentPos == 0))
             continue;
 
         switch (index)
@@ -473,7 +473,7 @@ void Init(void)
         escalator.arm[index].variability[2] = 0;
         escalator.arm[index].variability[3] = 0;
         escalator.arm[index].lastPos = POS_INIT;
-        escalator.arm[index].currentPos = 0;
+        escalator.arm[index].currentPos = POS_2of4;
         escalator.arm[index].isDACSuccessive = 0;
         escalator.arm[index].successiveDACTarget = 0;
         escalator.arm[index].successiveTimestamp = 0;
