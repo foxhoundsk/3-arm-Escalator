@@ -39,7 +39,7 @@ namespace Maze_3_arm
         ushort[] DACtable = new ushort[6] { 0x0, 0x0106, 0x020d, 0x03b1, 0x0521, 0x0628 }; /* 0.75(element 4) was 0x041a *//* speed from low to high as index from 0 ~ max */
         //ushort[] DACtable = new ushort[6] { 0x0, 0x020d, 0x041a, 0x0521, 0x0628 };
         byte[] DACspeed = new byte[6] { 0, 0, 0, 0, 0, 0 };
-        FileStream resultFileStream;
+        FileStream logFile;
         StreamWriter resultStreamWriter;
         static ThreadStart recvThread = new ThreadStart(Work.taskRecvThread);
         Thread newThread = new Thread(recvThread);
@@ -665,12 +665,14 @@ namespace Maze_3_arm
             }
             try
             {
-                resultStreamWriter = new StreamWriter(resultFileDialog.FileName, true);
+                logFile = new FileStream(resultFileDialog.FileName, FileMode.CreateNew);
+                resultStreamWriter = new StreamWriter(logFile);
             }
             catch
             {
-                resultFilePath.Text = "File path error";
+                resultFilePath.Text = "File already existed or invalid path";
                 resultFilePath.ForeColor = Color.Red;
+                serialPort.Close();
                 return;
             }
             endTimestamp = getCurrentTimestamp() + long.Parse(trainTime.Text) * 60;
