@@ -9,7 +9,7 @@ void uartSend(uint8_t* buffer, uint8_t byteWaiting)
 {
 	uint8_t byteSend = 0, index = 0;
 
-	while (buffer[index] != NULL) /* we don't use strlen cuz its implementation is not guaranteed and this is a safe way to check data size */
+	/* WARN: this is going to cause fatal failure since it cause null byte not captured */while (buffer[index] != NULL) /* we don't use strlen cuz its implementation is not guaranteed and this is a safe way to check data size */
 	{
 		byteSend++;
 		index++;	
