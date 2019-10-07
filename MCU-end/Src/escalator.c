@@ -52,7 +52,7 @@ void escalatorProcess(void)
                         if (escalator.arm[index].lastPos != escalator.arm[index].currentPos) /* check if the current pos equal to previous pos, if it doesn't, trigger isDataChanged flag which inform wifi module we got data to send */
                         {
                             escalator.arm[index].lastPos = escalator.arm[index].currentPos;
-                            wifi.isDataChanged = 1; /* since we have three place uses this flag, so be aware that if you put this flag detector into interrupt */
+                            wifi.isDataChanged++; /* since we have three place uses this flag, so be aware that if you put this flag detector into interrupt */
                         }                        
                     }
                 }  
@@ -75,7 +75,7 @@ void escalatorProcess(void)
                         if (escalator.arm[index].lastPos != escalator.arm[index].currentPos)
                         {
                             escalator.arm[index].lastPos = escalator.arm[index].currentPos;
-                            wifi.isDataChanged = 1;
+                            wifi.isDataChanged++;
                         }                        
                     }
                 }  
@@ -97,7 +97,7 @@ void escalatorProcess(void)
                         if (escalator.arm[index].lastPos != escalator.arm[index].currentPos)
                         {
                             escalator.arm[index].lastPos = escalator.arm[index].currentPos;
-                            wifi.isDataChanged = 1;
+                            wifi.isDataChanged++;
                         }                        
                     }
                 }                                    

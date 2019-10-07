@@ -161,7 +161,7 @@ void wifiProcess(void)
 				uartSend(&wifiSendBuffer, WIFI_DAC_DATA_SIZE);
 				break;
 			}
-			if (wifi.isDataChanged == 1)
+			if (wifi.isDataChanged)
 			{								
 				wifiCommandEncode(AT_CIPSEND, "0,3"); /* TODO: we can reduce to 1 byte since we only want to represent pos from 1~4, but be aware of "pos + 1" at pos encode func */
 				uartSend(&wifiSendBuffer, CIPSEND_START);

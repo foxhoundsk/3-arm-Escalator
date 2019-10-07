@@ -101,7 +101,7 @@ void uartTransmission(void)
 			if (uartIsDataKnockDoor())	break;	/* now, Im not recommend this style due to its exploitibility */
 			if (uartIsEndTrainData())	break;		
 			if (escalator.mode == NORMAL) uartApplyDACData();
-			wifi.isDataChanged = 0;
+			wifi.isDataChanged--;
 			uart.Tstate = IDLE;		
 			memset(&wifiSendBuffer, 0, SEND_BUFFER_SIZE);
 			memset(&wifiRecvBuffer, 0, RECV_BUFFER_SIZE);
@@ -207,6 +207,7 @@ bool uartIsEndTrainData(void)	/* with this implementation, data similarity shoul
 		wifi.currentTick = mcu.sysTick;
 		while ((wifi.currentTick + DAC_APPLY_TIME) >= mcu.sysTick);
 		wifi.currentTick = 0;
+		wifi.isDataChanged = 0;
 		mcu.sysTick = 0;
 		/*--------------------------*/
 		memset(&wifiRecvBuffer, 0, RECV_BUFFER_SIZE);

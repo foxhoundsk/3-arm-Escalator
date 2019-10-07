@@ -252,7 +252,7 @@ void taskProcess(void)
             {
                 escalator.mode = NORMAL;
                 escalator.queueTask |= 0xC; /* TODO: (this can be done in a func which find 00 field then insert new task) WARN: BE AWARE IF NEW KIND OF TASK ADD IN THE FUTURE, THIS WILL BE A MONSTER */
-                wifi.isDataChanged = 1; /* force sent loc to get a speed at 30 sec */
+                wifi.isDataChanged++; /* force sent loc to get a speed at 30 sec */
             }
             else
                 return;            
