@@ -36,13 +36,13 @@ void escalatorProcess(void)
         switch (index) /* p1_1 to p1_3 stands for escalator arm from left to right respectively*/
         {
             case 0:                
-                if (0x3fd <= adc_buf[0].p1_1 && adc_buf[0].p1_1 <= 0x3ff)  escalator.arm[index].variability[POS_1of4]++;
-                else if (0x0170 <= adc_buf[0].p1_1 && adc_buf[0].p1_1 <= 0x01df) escalator.arm[index].variability[POS_2of4]++;
-                else if (0x00b0 <= adc_buf[0].p1_1 && adc_buf[0].p1_1 <= 0x00f7) escalator.arm[index].variability[POS_3of4]++;
+                if (0x3fd <= adc_buf[0].p1_1 && adc_buf[0].p1_1 <= 0x3ff)  escalator.arm[index].variability[POS_1of4]++; else escalator.arm[index].variability[POS_1of4] = 0;
+                if (0x0170 <= adc_buf[0].p1_1 && adc_buf[0].p1_1 <= 0x01df) escalator.arm[index].variability[POS_2of4]++; else escalator.arm[index].variability[POS_2of4] = 0;
+                if (0x00b0 <= adc_buf[0].p1_1 && adc_buf[0].p1_1 <= 0x017f) escalator.arm[index].variability[POS_3of4]++; else escalator.arm[index].variability[POS_3of4] = 0;
                 //else if (0x00a0 <= adc_buf[0].p1_2 && adc_buf[0].p1_2 <= 0x0fa) escalator.arm[index].variability[POS_4of4]++;
                 for (index2 = 0; index2 < 4; index2++)
                 {
-                    if (escalator.arm[index].variability[index2] >= 3000)
+                    if (escalator.arm[index].variability[index2] >= 1000)
                     {
                         escalator.arm[index].variability[POS_1of4] = 0; /* clear all variability to prevent near-side trigger*/
 												escalator.arm[index].variability[POS_2of4] = 0;
@@ -59,13 +59,13 @@ void escalatorProcess(void)
                 break;
 					
             case 1:
-                if (0x3fd <= adc_buf[0].p1_2 && adc_buf[0].p1_2 <= 0x3ff)  escalator.arm[index].variability[POS_1of4]++;
-                /*0x256*/else if (0x0170 <= adc_buf[0].p1_2 && adc_buf[0].p1_2 <= 0x01df) escalator.arm[index].variability[POS_2of4]++;
-                /*0x157*/else if (0x00a0 <= adc_buf[0].p1_2 && adc_buf[0].p1_2 <= 0x0100) escalator.arm[index].variability[POS_3of4]++;
+                if (0x3fd <= adc_buf[0].p1_2 && adc_buf[0].p1_2 <= 0x3ff)  escalator.arm[index].variability[POS_1of4]++; else escalator.arm[index].variability[POS_1of4] = 0;
+                /*0x256*/if (0x0170 <= adc_buf[0].p1_2 && adc_buf[0].p1_2 <= 0x01df) escalator.arm[index].variability[POS_2of4]++; else escalator.arm[index].variability[POS_2of4] = 0;
+                /*0x157*/if (0x00a0 <= adc_buf[0].p1_2 && adc_buf[0].p1_2 <= 0x0167) escalator.arm[index].variability[POS_3of4]++; else escalator.arm[index].variability[POS_3of4] = 0;
                 ///*0x0d9*/else if (0x00d8 <= adc_buf[0].p1_2 && adc_buf[0].p1_2 <= 0x00da) escalator.arm[index].variability[POS_4of4]++;
                 for (index2 = 0; index2 < 4; index2++)
                 {
-                    if (escalator.arm[index].variability[index2] >= 3000)
+                    if (escalator.arm[index].variability[index2] >= 1000)
                     {
                         escalator.arm[index].variability[POS_1of4] = 0;
 												escalator.arm[index].variability[POS_2of4] = 0;
@@ -81,13 +81,13 @@ void escalatorProcess(void)
                 }  
                 break;
             case 2:   
-                if (0x3fd <= adc_buf[0].p1_3 && adc_buf[0].p1_3 <= 0x3ff)  escalator.arm[index].variability[POS_1of4]++;
-                else if (0x0170 <= adc_buf[0].p1_3 && adc_buf[0].p1_3 <= 0x01df) escalator.arm[index].variability[POS_2of4]++;
-                else if (0x00a0 <= adc_buf[0].p1_3 && adc_buf[0].p1_3 <= 0x0100) escalator.arm[index].variability[POS_3of4]++;
+                if (0x3fd <= adc_buf[0].p1_3 && adc_buf[0].p1_3 <= 0x3ff)  escalator.arm[index].variability[POS_1of4]++; else escalator.arm[index].variability[POS_1of4] = 0;
+                if (0x0170 <= adc_buf[0].p1_3 && adc_buf[0].p1_3 <= 0x01df) escalator.arm[index].variability[POS_2of4]++; else escalator.arm[index].variability[POS_2of4] = 0;
+                if (0x00a0 <= adc_buf[0].p1_3 && adc_buf[0].p1_3 <= 0x017f) escalator.arm[index].variability[POS_3of4]++; else escalator.arm[index].variability[POS_3of4] = 0;
                 //else if (0x00d8 <= adc_buf[0].p1_3 && adc_buf[0].p1_3 <= 0x00da) escalator.arm[index].variability[POS_4of4]++;
                 for (index2 = 0; index2 < 4; index2++)
                 {
-                    if (escalator.arm[index].variability[index2] >= 3000)
+                    if (escalator.arm[index].variability[index2] >= 1000)
                     {
                         escalator.arm[index].variability[POS_1of4] = 0;
 												escalator.arm[index].variability[POS_2of4] = 0;
