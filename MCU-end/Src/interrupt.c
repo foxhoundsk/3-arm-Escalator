@@ -77,17 +77,6 @@ void TIMER2_ISR(void) interrupt TIMER2_IRQn
     TMR2CN0_TF2H = 0;
     
     mcu.sysTick++;
-    /*
-    if (mcu.sysTick % 1000 == 0)
-    {
-                
-    }
-    */
-    if ((mcu.sysTick % 500) == 0)
-    {
-        escalator.intervalFlag = 1;
-        //LED0 = ~LED0;
-    }
 
     if ((mcu.sysTick % 10) == 0)
     {
@@ -109,7 +98,6 @@ void TIMER2_ISR(void) interrupt TIMER2_IRQn
         LED0 = 0;
     }
     */
-    /* escalator.intervalFlag set here */
 }
 /*************flawless0714 * END OF FILE****/
 

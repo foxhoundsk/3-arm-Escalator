@@ -179,7 +179,6 @@ bool uartIsEndTrainData(void)	/* with this implementation, data similarity shoul
 		uart.Tstate = WAIT_KNOCK_DOOR;
 		uart.state = STANDBY;
 		/* re-init training args and reset DAC---- */		
-		escalator.intervalFlag = 0;
 		escalator.mode = NORMAL;
 		escalator.autoSpeedTick = 0;
 		escalator.queueTask = 0;

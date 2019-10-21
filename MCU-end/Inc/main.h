@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include "uart.h"
 #include "esp8266.h"
-#include "Escalator.h"
+#include "escalator.h"
 
 #define DAC_APPLY_TIME 25
 #define DAC_SUCCESSIVE_TIME_INTERVAL 15
@@ -28,10 +28,14 @@ typedef struct
     uint32_t sysTick; /* tick per second */
 }Mcu;
 
+#define L_ARM_IO p1_1
+#define M_ARM_IO p1_2
+#define R_ARM_IO p1_3
+
 typedef struct{
-  uint16_t p1_1;
-  uint16_t p1_2;
-  uint16_t p1_3;
+  uint16_t L_ARM_IO;
+  uint16_t M_ARM_IO;
+  uint16_t R_ARM_IO;
 }scan_t;
 
 void ADC_enableAutoScan(scan_t* pbuffer, uint8_t numElements);

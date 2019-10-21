@@ -1,4 +1,4 @@
-// Ver 4.3.0
+// Ver 5.0.0
 /*
     1. Since the complicate step to setup wifi module(esp8266), we temporary deprecated the wifi transfer method and use USB-TTL instead.
 
@@ -11,10 +11,9 @@
 #define ADC0P7 7       /* ADC start address, P1.1, check register ADC0MX for more details */            
 #define NUM_CHANNELS 3 /* number of ADC channel in this project */                   
 #define ADC_BUFFER_SIZE 6
-#define NUM_SCANS 1
-#define BUFFER_SIZE (NUM_CHANNELS * NUM_SCANS)
+#define BUFFER_SIZE (NUM_CHANNELS)
 #define BUFFER_START_ADDR (0x0000)
-SI_LOCATED_VARIABLE_NO_INIT(adc_buf[NUM_SCANS], scan_t, SI_SEG_XDATA, BUFFER_START_ADDR);
+SI_LOCATED_VARIABLE_NO_INIT(adc_buf, scan_t, SI_SEG_XDATA, BUFFER_START_ADDR);
 volatile Mcu mcu;
 volatile uint8_t CONVERSION_COMPLETE = 0;
 extern volatile Escalator escalator;
@@ -23,8 +22,6 @@ extern const uint16_t xdata SPEED_TABLE[6];
 extern volatile Wifi wifi; 
 SI_SBIT (LED0, SFR_P1, 4);    
 SI_SBIT (BC_EN, SFR_P2, 2);
-
-//uint32_t debugTick = 0;
 
 void main()
 {
@@ -462,7 +459,6 @@ void Init(void)
     /* Struct member ----------------*/
     mcu.sysTick = 0;
 
-    escalator.intervalFlag = 0;
     escalator.mode = NORMAL;
     escalator.autoSpeedTick = 0;
     escalator.queueTask = 0;
